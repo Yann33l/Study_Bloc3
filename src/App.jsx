@@ -1,20 +1,19 @@
-
 function App() {
   return (
-    <main class="Connexion" >
-        <div class="centered-element">
-          <h1>Log in</h1>
-          <p >Besoin d'un compte? <a href=""> Cliquer içi</a></p>
-          <h3>Email <br />
-            <input type="text" placeholder="Login" />
-          </h3>
-          <h3>Password<br />
-            <input type="password" placeholder="Mot de passe" />
-          </h3>
-          <button >Connexion</button>  
-        </div>
+    <main class="Connexion centered-element" >
+      <h1>Log in</h1>
+      <br />
+        <form>
+          <label htmlfor="Email">Email<br /></label >
+          <input type="text" placeholder="Login" />
+          <br /><br />
+          <label htmlfor="Password">Password<br /></label >
+          <input type="password" placeholder="Mot de passe" />
+          <br /><br />
+          <button>Connexion</button>  
+        </form>
+        <p >Besoin d'un compte? <a href=""> Cliquer içi</a></p>
     </main>
-
   )
 }
 

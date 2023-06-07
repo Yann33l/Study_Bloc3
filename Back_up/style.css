@@ -6,7 +6,7 @@
 	src: url(/police/goldenline/fonts/Wallpoet_Regular.ttf) format(truetype)
 }
 
-.page {
+page {
   padding: 0;
   margin: 0;
   background-color: rgb(54, 54, 54);
