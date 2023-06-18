@@ -4,6 +4,6 @@ class User(BaseModel):
     ID: int
     Email: str
     Password: str
-    First_connection: str
+    First_connexion: str
     Last_change_password: str
     Admin: int

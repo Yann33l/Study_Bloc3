@@ -6,7 +6,7 @@ from config.database import meta
 users = Table(
     'users',meta,
     Column('ID',Integer,primary_key=True),
-    Column('Email',String(45),unique=True),
+    Column('Email',String(45)),
     Column('Password',String(45)),
     Column('First_connexion',DateTime),
     Column('Last_change_password',DATE),
