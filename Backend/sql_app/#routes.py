@@ -1,10 +1,11 @@
 from fastapi import APIRouter
-from config.database import SessionLocal
-from models.index import users
-from schemas.index import User
+from database import SessionLocal
+from models import users
+from schemas import UserBase
+
 
 user = APIRouter() 
-
+""" 
 
 @user.post("/")
 async def write_data(user: User):
@@ -44,4 +45,4 @@ async def delete_data(id:int, user: User):
         Last_change_password=user.Last_change_password,
         Admin=user.Admin,
     ).where(user.c.id == id))
-    return SessionLocal.execute(users.select()).fetchall()
+    return SessionLocal.execute(users.select()).fetchall() """
