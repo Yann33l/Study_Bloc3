@@ -6,10 +6,6 @@ from schemas.index import User
 user = APIRouter() 
 
 
-@user.get("/{id}/")
-async def read_data():
-    return SessionLocal.execute(users.select()).where(user.c.id == id).fetchall()
-
 @user.post("/")
 async def write_data(user: User):
     SessionLocal.execute(users.insert().values(
@@ -22,6 +18,9 @@ async def write_data(user: User):
     ))
     return SessionLocal.execute(users.select()).fetchall()
 
+@user.get("/{id}/")
+async def read_data(id:int):
+    return SessionLocal.execute(users.select()).where(user.c.id == id).fetchall()
 
 @user.put("/{id}")
 async def update_data(id:int, user: User):
