@@ -8,6 +8,7 @@ function checkAdmin(Email) {
 }
 
 
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -16,6 +17,7 @@ function App() {
 
     const Email = event.target.elements.Email.value;
     const Password = event.target.elements.Password.value;
+ 
 
     if ((Email === 'test@test' || Email === 'admin@admin') && Password === '1234') {
       // Connection de base pour test acces page User vs Admin
@@ -24,22 +26,31 @@ function App() {
       } else {
         setLoggedIn(true);
       }
-    } else {
+
+    } else {  
       // Connexion via SGBD
+     /* try {
+        const response = await axios.post('/autentifiaction/', { email: Email });
+        // Process the response and handle the login logic here
+      } catch (error) {
+        // Handle any errors that occur during the API request
+        alert('Une erreur s\'est produite lors de la vérification des informations d\'identification.');
+      }
+    }*/
       try {
-        const data = await checkCredentials(Email, Password);
+          const data = await checkCredentials(Email);
         if (response.success) {
-          if (data.isAdmin = true) {
+          if (response.isAdmin = true) {
             setLoggedIn('admin')
             ;
           } else {
             setLoggedIn(true);
           };
         } else {
-          alert(data.message);
+          alert(response.message);
         }
       } catch (error) {
-        alert('Une erreur s\'est produite lors de la vérification des informations d\'identification.');
+        alert('erreur etape 2 Une erreur s\'est produite lors de la vérification des app informations d\'identification. app.jsx');
       } finally {
       }
     }
