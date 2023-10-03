@@ -15,7 +15,7 @@ export const checkCredentials = async (Email, Password) => {
     const response = await axios.get(`${API_URL}/Connexion/`, requestData);
     const data = response.data;
 
-// Vérification de la colonne "Admin" dans la réponse de l'API
+// Vérification de la colonne "Admin" dans la réponse de l'API pour connection page utilisateur / admin
     if (data.Admin === 1) {
       data.isAdmin = true;} 
     else {
