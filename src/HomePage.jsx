@@ -5,25 +5,25 @@ function HomePage() {
         <div id="logoheader">
             <img id="logo" alt="logo" src="/public/Image/logo/png/logo-no-background.png" height="120" />
         </div>
-        <nav class="menu-nav">
+        <nav className="menu-nav">
             <ul>
-                <li class="bouton">
+                <li className="bouton">
                     <a href="/main.html">Acceuil</a>
                 </li>
-                <li class="bouton">
+                <li className="bouton">
                     <a href="/Graphiques.html">Graphiques</a>
                 </li>
-                <li class="bouton">
+                <li className="bouton">
                     <a href="/Exporter.html">Exporter</a>
                 </li>
-                <li class="bouton">
+                <li className="bouton">
                     <a href="/index.html">Déconnexion</a>
                 </li>
             </ul>
         </nav>
       </header>
       
-      <main class="ZoneTravail">
+      <main className="ZoneTravail">
           <div>
             <h1>Ici sera le graphe 1</h1>
             <h2>Ici le tableau du graphe 1</h2>

@@ -4,8 +4,12 @@ from . import models, schemas
 
 
 "Fonctionne"
-def get_user(db: Session, user_id: int):
-    return db.query(models.users).filter(models.users.ID == user_id).first()
+def Identification(db: Session, email: str, password: str):
+    return db.query(models.users).filter(models.users.Email == email, models.users.Password == password).first()
+
+"Fonctionne"
+def get_user_by_ID(db: Session, id: int):
+    return db.query(models.users).filter(models.users.ID == id).first()
 
 "Fonctionne"
 def get_user_by_email(db: Session, email: str):
@@ -17,7 +21,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_password = user.Password + "notreallyhashed"
+    fake_hashed_password = user.Password + "123"
     db_user = models.users(Email=user.Email, Password=fake_hashed_password, Admin=user.Admin,ID=user.ID)
     db.add(db_user)
     db.commit()

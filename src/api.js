@@ -4,17 +4,28 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 const API_URL = 'http://127.0.0.1:8000'; 
 
 export const checkCredentials = async (Email, Password) => {
-  try {  console.log("is ok")
-    const response = await axios.post(`${API_URL}/autentifiaction/`,{Email} );
-    console.log('ok')
-    const data = response.data;
+  // Fonction de hashage du mot de passe
+  const HashedPassword = Password+'123'
+  console.log(HashedPassword)
 
-    // Vérification de la colonne "Admin" dans la réponse de l'API
-    if (data.admin === 1) {
+  //Connexion à l'application
+  try { 
+  const requestData = {
+    params : {
+      email: Email,
+      password: HashedPassword,
+    }};
+  const response = await axios.get(`${API_URL}/Connexion/`, requestData);
+  const data = response.data;
+
+// Vérification de la colonne "Admin" dans la réponse de l'API
+    if (data.Admin === 1) {
       data.isAdmin = true;
-    } else {
+    } 
+    else {
       data.isAdmin = false;
     }
+    console.log('retrun data.isAdmin = '+ data.isAdmin)
 
     return data;
   } 
