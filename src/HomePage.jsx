@@ -17,7 +17,7 @@ function HomePage() {
                     <a href="/Exporter.html">Exporter</a>
                 </li>
                 <li className="bouton">
-                    <a href="/index.html">Déconnexion</a>
+                    <a href="">Déconnexion</a>
                 </li>
             </ul>
         </nav>
