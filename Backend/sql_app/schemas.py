@@ -10,7 +10,6 @@ class UserBase(BaseModel):
         
     class Config:
         orm_mode = True
-
 class UserCreate(UserBase):
     Password: bytes
 
@@ -19,7 +18,6 @@ class Clients(BaseModel):
     num_client: int
     nbr_enfants: int
     id_CSP: int
-
 
 # table CSP
 class cath_socio_pro(BaseModel):
@@ -41,18 +39,10 @@ class cathegories_articles(BaseModel):
     libelle_cathegorie: str
     code: str
 
-# table collecte
-class collectes(BaseModel):
-    ID: int
-    id_cat_article: int
-    id_client: int
-
 # table panier
 class paniers(BaseModel):
     ID: int
-    id_collecte: int
-    montant_vente: int
-    cout_vente: int
+    id_client: int
     date_achat: date
 
 # table r_panier_article
@@ -61,9 +51,3 @@ class r_panier_article(BaseModel):
     id_panier: int
     id_article: int
     quantite_article: int
-
-# table r_panier_collecte
-class r_panier_collecte(BaseModel):
-    ID: int
-    id_collecte: int
-    id_panier: int
