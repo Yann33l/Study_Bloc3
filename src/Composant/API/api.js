@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://127.0.0.1:8000'; 
+export const API_URL = 'http://127.0.0.1:8000'; 
 
 export const checkCredentials = async (Email, Password) => {
 
@@ -26,12 +26,3 @@ export const checkCredentials = async (Email, Password) => {
     throw error;
   }};
 
-export const getDepenses_CSP_ClasseArticle = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/Depenses_CSP_ClasseArticle/`);
-    const data = response.data;
-    return data;} 
-  catch (error) {
-    console.error('erreur etape 2 Une erreur s\'est produite lors de la récupération des dépenses par CSP et classe d\'article :', error);
-    throw error;
-  }}

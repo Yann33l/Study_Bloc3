@@ -1,31 +1,17 @@
 import React, { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { columnsTable1, dataTableStyle } from "./TableStyle";
+import { columnsTable3, dataTableStyle } from "./TableStyle";
 import axios from 'axios'
 import {API_URL} from '../API/api'
 
 
-const Table1 = () => {
+const Table3 = () => {
   const [data, setData] = React.useState([]);
 
-    // Methode 1: fetch
- /* useEffect(() => {
-      fetch(`${API_URL}/depenses_CSP_ClasseArticle`)
-        .then((response) => response.json())
-        .then((json) => {
-        const dataWithIds = json.results.map((row, index) => ({
-          ...row,
-          id: index + 1,
-        }));
-        setData(dataWithIds);
-      });
-    }, []);*/
-   
-    //Methode 2: axios
   useEffect(() => {
-    const getDepenses_CSP_ClasseArticle = async () => {
+    const getCollecte = async () => {
       try {
-        const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`);
+        const response = await axios.get(`${API_URL}/Collecte/`);
         const responseData = response.data;
         setData(responseData)
         const dataWithIds = responseData.results.map((row, index) => ({
@@ -38,13 +24,13 @@ const Table1 = () => {
       }
     };
   
-    getDepenses_CSP_ClasseArticle(); 
+    getCollecte(); 
   }, []);
 
   return (
     <DataGrid
       rows={data}
-      columns={columnsTable1}
+      columns={columnsTable3}
       loading={!data.length}
       sx={dataTableStyle}
       getRowId={(row) => row.id} 
@@ -52,5 +38,5 @@ const Table1 = () => {
   );
 };
 
-export default Table1;
+export default Table3;
 

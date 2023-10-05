@@ -1,6 +1,8 @@
 import React, { useState, useEffect} from 'react';
-import TableComponent from './Composant/DataTables/DataTable';
 import Table1 from './Composant/Table/Table1_depense_CSP_CatArticle';
+import Table2 from './Composant/Table/Table2_moyenne_pannier_par_CSP';
+import Table3 from './Composant/Table/Table3_Collecte';
+import Table4 from './Composant/Table/Table4_Ensemble';
 
 
 
@@ -16,6 +18,38 @@ function HomePage({ isAdmin }) {
   // Contenu du main basé sur l'état
   let mainContent;
   switch (content) {
+    case 'Table1':
+      mainContent = (
+          <div>
+            <h1>Depenses_CSP_ClasseArticle</h1>
+            <Table1  />
+          </div>)
+          ;
+      break;
+      case 'Table2':
+        mainContent = (
+            <div>
+              <h1>moyenne_pannier_par_CSP</h1>
+              <Table2  />
+            </div>)
+            ;
+        break;
+        case 'Table3':
+          mainContent = (
+              <div>
+                <h1>Collecte</h1>
+                <Table3  />
+              </div>)
+              ;
+          break;
+          case 'Table4':
+            mainContent = (
+                <div>
+                  <h1>Ensemble</h1>
+                  <Table4  />
+                </div>)
+                ;
+            break;
     case 'acceuil':
     case 'default':
       mainContent = (
@@ -34,8 +68,22 @@ function HomePage({ isAdmin }) {
     case 'exporter':
       mainContent = (
         <div>
-          <h1>Depenses_CSP_ClasseArticle</h1>
-          <Table1  />
+            <nav className="menu-nav">
+              <ul>
+                <li className="bouton" onClick={() => handleButtonClick('Table1')}>
+                  Tab1
+                </li>
+                <li className="bouton" onClick={() => handleButtonClick('Table2')}>
+                  Tab2
+                </li>
+                <li className="bouton" onClick={() => handleButtonClick('Table3')}>
+                  Tab3
+                </li>
+                <li className="bouton" onClick={() => handleButtonClick('Table4')}>
+                  Tab4
+                </li>
+              </ul>
+            </nav>
         </div>
       );
       break;
