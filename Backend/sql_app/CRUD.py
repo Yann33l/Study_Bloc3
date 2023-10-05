@@ -39,7 +39,7 @@ def create_client(db: Session, client: schemas.Clients):
 
 # Produits
 def create_produit(db: Session, articles: schemas.articles):
-    db_articles = models.articles(ID=articles.ID, libelle_article=articles.libelle_article, prix_vente=articles.prix_vente, cout=articles.cout, id_cathegorie_article=articles.id_cathegorie_article)
+    db_articles = models.articles(ID=articles.ID, libelle_article=articles.libelle_article, prix_vente=articles.prix_vente, cout=articles.cout, id_categorie_article=articles.id_categorie_article)
     db.add(db_articles)
     db.commit()
     db.refresh(db_articles)
@@ -48,7 +48,7 @@ def create_produit(db: Session, articles: schemas.articles):
         "libelle_article": db_articles.libelle_article,
         "prix_vente": db_articles.prix_vente,
         "cout": db_articles.cout,
-        "id_cathegorie_article": db_articles.id_cathegorie_article
+        "id_categorie_article": db_articles.id_categorie_article
     }
     return produit_response_dict
 

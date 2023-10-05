@@ -1,25 +1,17 @@
 import React, { useState, useEffect} from 'react';
+import TableComponent from './Composant/DataTables/DataTable';
+import Table1 from './Composant/Table/Table1_depense_CSP_CatArticle';
+
 
 
 function HomePage({ isAdmin }) {
   const [content, setContent] = useState('default'); // État pour suivre le contenu
-  const [products, setProducts] = useState([]); // État pour stocker les produits
 
   // Fonctions pour gérer les clics des boutons et mettre à jour le contenu
   const handleButtonClick = (newContent) => {
     setContent(newContent);
   };
 
-  useEffect(() => {
-    // Simulez ici l'obtention des produits de la base de données
-    const productsFromDatabase = [
-      { id: 1, name: 'Produit 1', description: 'Description du produit 1' },
-      { id: 2, name: 'Produit 2', description: 'Description du produit 2' },
-      // ... Ajoutez d'autres produits ici
-    ];
-
-    setProducts(productsFromDatabase);
-  }, []);
 
   // Contenu du main basé sur l'état
   let mainContent;
@@ -37,28 +29,13 @@ function HomePage({ isAdmin }) {
     case 'graphiques':
       mainContent = (
         // Contenu pour le bouton "Graphiques"
-        <h1>TableComponent </h1>    );
+        <h1>be </h1>    );
       break;
     case 'exporter':
       mainContent = (
         <div>
-          <h1>Liste des produits</h1>
-          <table>
-            <thead>
-              <tr>
-                <th>Nom du produit</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr key={product.id}>
-                  <td>{product.name}</td>
-                  <td>{product.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <h1>Depenses_CSP_ClasseArticle</h1>
+          <Table1  />
         </div>
       );
       break;

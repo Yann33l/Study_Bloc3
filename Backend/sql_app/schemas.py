@@ -20,7 +20,7 @@ class Clients(BaseModel):
     id_CSP: int
 
 # table CSP
-class cath_socio_pro(BaseModel):
+class cat_socio_pro(BaseModel):
     ID: int
     libelle_CSP: str
     id_CSP: int
@@ -31,12 +31,12 @@ class articles(BaseModel):
     libelle_article: str
     prix_vente: float
     cout: float
-    id_cathegorie_article: int
+    id_categorie_article: int
 
-# table cathegorie_articles
-class cathegories_articles(BaseModel):
+# table categorie_articles
+class categories_articles(BaseModel):
     ID: int
-    libelle_cathegorie: str
+    libelle_categorie: str
     code: str
 
 # table panier

@@ -21,8 +21,8 @@ class clients(Base):
     nbr_enfants = Column(Integer)
     id_CSP = Column(Integer)
 
-class cath_socio_pro(Base):
-    __tablename__ = "cath_socio_pro"
+class cat_socio_pro(Base):
+    __tablename__ = "cat_socio_pro"
 
     ID = Column(Integer,primary_key=True,index=True)
     libelle_CSP = Column(String(45))
@@ -35,13 +35,13 @@ class articles(Base):
     libelle_article = Column(String(45))
     prix_vente = Column(Integer)
     cout = Column(Integer)
-    id_cathegorie_article = Column(Integer)
+    id_categorie_article = Column(Integer)
 
-class cathegories_articles(Base):
-    __tablename__ = "cathegories_articles"
+class categories_articles(Base):
+    __tablename__ = "categories_articles"
 
     ID = Column(Integer,primary_key=True,index=True)
-    libelle_cathegorie = Column(String(45))
+    libelle_categorie = Column(String(45))
     code = Column(String(45))   
 
 class paniers(Base):

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HomePage from './HomePage';
-import { checkCredentials } from './api';
+import { checkCredentials } from './Composant/API/api';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -13,9 +13,6 @@ function App() {
 
     try {
       const data = await checkCredentials(Email, Password);
-      console.log(data);
-      console.log(data.isAdmin);
-
       // Si l'utilisateur est un administrateur => loggedIn à 'admin'
       if (data.isAdmin === true) {
         setLoggedIn('admin');
