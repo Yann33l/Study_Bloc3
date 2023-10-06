@@ -21,6 +21,46 @@ ChartJS.register(
     Legend
   );
 
+const chartOptions = {
+responsive: true, // Désactiver la réponse automatique
+maintainAspectRatio: false,
+plugins: {
+    legend: {
+        display: true,
+        position: 'bottom', // Position de la légende (peut être 'top', 'bottom', 'left' ou 'right')
+        labels: {
+            font: {
+                size: 16, // Taille de la police de la légende
+            },
+            color: 'white', // Couleur du texte de la légende
+        },
+    },
+},
+layout: {
+    padding: {
+        left: 0, // Marge à gauche
+        right: 0, // Marge à droite
+        top: 50, // Marge en haut
+        bottom: 100, // Marge en bas
+    },
+},        
+scales: {
+    x: {
+        title: {
+            display: true,
+            text: 'Catégories',
+        },
+    },
+    y: {
+        beginAtZero: true,
+        title: {
+            display: true,
+            text: 'Dépenses',
+        },
+    },
+},
+};
+
 const Graph2 = () => {
     const [data, setData] = useState({
         labels: [],
@@ -74,28 +114,13 @@ const Graph2 = () => {
         return colors;
     };
 
-    const options = {
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Catégories',
-                },
-            },
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Dépenses',
-                },
-            },
-        },
-    };
+
+
 
     return (
-        <div>
+        <div style={{ height: "500px", color: 'white'}}>
             <h2>Répartition des dépenses par catégorie de vêtement pour chaque CSP</h2>
-            <Bar data={data} options={options} />
+            <Bar data={data} options={chartOptions} />
         </div>
     );
 }

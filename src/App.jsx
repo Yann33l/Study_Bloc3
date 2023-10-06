@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import HomePage from './HomePage';
+import HomePage from './Composant/Page/HomePage';
 import { checkCredentials } from './Composant/API/api';
 
 function App() {

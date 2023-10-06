@@ -6,6 +6,32 @@ import { API_URL } from '../API/api';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const chartOptions = {
+    responsive: true, // Désactiver la réponse automatique
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            display: true,
+            position: 'bottom', // Position de la légende (peut être 'top', 'bottom', 'left' ou 'right')
+            labels: {
+                font: {
+                    size: 16, // Taille de la police de la légende
+                },
+                color: 'white', // Couleur du texte de la légende
+            },
+        },
+    },
+    layout: {
+        padding: {
+            left: 0, // Marge à gauche
+            right: 0, // Marge à droite
+            top: 50, // Marge en haut
+            bottom: 100, // Marge en bas
+        },
+    },
+};
+
+
 const Graph1 = () => {
     const [data, setData] = useState({
         labels: [],
@@ -72,7 +98,10 @@ const Graph1 = () => {
     };
 
     return (
-        <Doughnut data={data} />
+        <div style={{ height: "500px", color: 'white' }}>
+            <h1>Dépenses par classe</h1>
+            <Doughnut data={data}  options={chartOptions}/>
+        </div>
     );
 }
 

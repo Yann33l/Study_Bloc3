@@ -5,6 +5,7 @@ import bcrypt, json, csv
 from . import CRUD, models, schemas
 from .database import SessionLocal, engine, engine_read
 from datetime import datetime
+from .settings import settings
 from sqlalchemy.sql.expression import text
 
 
@@ -13,6 +14,13 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+@app.get("/info")
+async def info():
+    return {
+        "app_name": settings.app_name,
+        "admin_email": settings.admin_email,
+        "items_per_user": settings.items_per_user,
+    }
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
