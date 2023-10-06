@@ -3,6 +3,8 @@ import Table1 from './Composant/Table/Table1_depense_CSP_CatArticle';
 import Table2 from './Composant/Table/Table2_moyenne_pannier_par_CSP';
 import Table3 from './Composant/Table/Table3_Collecte';
 import Table4 from './Composant/Table/Table4_Ensemble';
+import Graph1 from './Composant/Graph/Graph1';
+import Graph2 from './Composant/Graph/Graph1-2';
 
 
 
@@ -18,6 +20,15 @@ function HomePage({ isAdmin }) {
   // Contenu du main basé sur l'état
   let mainContent;
   switch (content) {
+    case 'Graph1':
+      mainContent = (
+          <div>
+            <h1>Depenses_CSP_ClasseArticle</h1>
+            <Graph1  />
+            <Graph2  />
+          </div>)
+          ;
+      break;
     case 'Table1':
       mainContent = (
           <div>
@@ -26,30 +37,30 @@ function HomePage({ isAdmin }) {
           </div>)
           ;
       break;
-      case 'Table2':
-        mainContent = (
-            <div>
-              <h1>moyenne_pannier_par_CSP</h1>
-              <Table2  />
-            </div>)
-            ;
-        break;
-        case 'Table3':
-          mainContent = (
-              <div>
-                <h1>Collecte</h1>
-                <Table3  />
-              </div>)
-              ;
-          break;
-          case 'Table4':
-            mainContent = (
-                <div>
-                  <h1>Ensemble</h1>
-                  <Table4  />
-                </div>)
-                ;
-            break;
+    case 'Table2':
+      mainContent = (
+          <div>
+            <h1>moyenne_pannier_par_CSP</h1>
+            <Table2  />
+          </div>)
+          ;
+      break;
+    case 'Table3':
+      mainContent = (
+          <div>
+            <h1>Collecte</h1>
+            <Table3  />
+          </div>)
+          ;
+      break;
+    case 'Table4':
+      mainContent = (
+          <div>
+            <h1>Ensemble</h1>
+            <Table4  />
+          </div>)
+          ;
+      break;
     case 'acceuil':
     case 'default':
       mainContent = (
@@ -62,8 +73,25 @@ function HomePage({ isAdmin }) {
       break;
     case 'graphiques':
       mainContent = (
-        // Contenu pour le bouton "Graphiques"
-        <h1>be </h1>    );
+        <div>
+            <nav className="menu-nav">
+              <ul>
+                <li className="bouton" onClick={() => handleButtonClick('Graph1')}>
+                  graphe1
+                </li>
+                <li className="bouton" onClick={() => handleButtonClick('Table2')}>
+                  Tab2
+                </li>
+                <li className="bouton" onClick={() => handleButtonClick('Table3')}>
+                  Tab3
+                </li>
+                <li className="bouton" onClick={() => handleButtonClick('Table4')}>
+                  Tab4
+                </li>
+              </ul>
+            </nav>
+        </div>
+      );
       break;
     case 'exporter':
       mainContent = (

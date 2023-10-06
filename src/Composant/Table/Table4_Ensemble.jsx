@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { columnsTable4, dataTableStyle } from "./TableStyle";
 import axios from 'axios'
 import {API_URL} from '../API/api'
@@ -34,6 +34,7 @@ const Table4 = () => {
       loading={!data.length}
       sx={dataTableStyle}
       getRowId={(row) => row.id} 
+      slots={{ toolbar: GridToolbar }}
     />
   );
 };
