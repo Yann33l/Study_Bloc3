@@ -26,3 +26,13 @@ export const checkCredentials = async (Email, Password) => {
     throw error;
   }};
 
+  export const getDepenses_CSP_ClasseArticle = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`);
+      const responseData = response.data;
+      return responseData;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }

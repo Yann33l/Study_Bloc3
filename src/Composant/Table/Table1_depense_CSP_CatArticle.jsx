@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { columnsTable1, dataTableStyle } from "./TableStyle";
 import axios from 'axios'
 import {API_URL} from '../API/api'
+
 
 
 const Table1 = () => {
@@ -23,6 +24,7 @@ const Table1 = () => {
    
     //Methode 2: axios
   useEffect(() => {
+    
     const getDepenses_CSP_ClasseArticle = async () => {
       try {
         const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`);
@@ -48,6 +50,7 @@ const Table1 = () => {
       loading={!data.length}
       sx={dataTableStyle}
       getRowId={(row) => row.id} 
+      slots={{ toolbar: GridToolbar }}
     />
   );
 };

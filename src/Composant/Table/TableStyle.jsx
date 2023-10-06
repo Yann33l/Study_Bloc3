@@ -1,6 +1,6 @@
 const dataTableStyle = {
     height: 700,
-    width: "80%",
+    width: "90%",
     margin: "auto",
     backgroundColor: "#ffffff",
     color: "#000000",
@@ -10,20 +10,20 @@ const dataTableStyle = {
   };
 
 const columnsTable1 = [
-{ field: "id", headerName: "id", width: 150 },
-{ field: "CSP", headerName: "CSP", width: 150 },
+{ field: "id", headerName: "id", width: 10 },
+{ field: "CSP", headerName: "CSP", width: 300 },
 { field: "depenses", headerName: "depenses", width: 150 },
 { field: "categorie_vetement", headerName: "categorie_vetement", width: 150 },
 ];
 
 const columnsTable2 = [
-    { field: "id", headerName: "id", width: 150 },
-    { field: "CSP", headerName: "CSP", width: 150 },
+    { field: "id", headerName: "id", width: 10 },
+    { field: "CSP", headerName: "CSP", width: 300 },
     { field: "Moy_panier", headerName: "Moy_panier", width: 150 },
 ];
 
 const columnsTable3 = [
-    { field: "id", headerName: "id", width: 150 },
+    { field: "id", headerName: "id", width: 10 },
     { field: "collecte", headerName: "collecte", width: 150 },
     { field: "num_panier", headerName: "num_panier", width: 150 },
     { field: "Prix_panier", headerName: "Prix_panier", width: 150 },
@@ -32,10 +32,10 @@ const columnsTable3 = [
     ];
 
 const columnsTable4 = [
-    { field: "id", headerName: "id", width: 150 },
+    { field: "id", headerName: "id", width: 10 },
     { field: "Client", headerName: "Client", width: 150 },
     { field: "Nbr enfants", headerName: "Nbr enfants", width: 150 },
-    { field: "CSP", headerName: "CSP", width: 150 },
+    { field: "CSP", headerName: "CSP", width: 300 },
     { field: "id_panier", headerName: "id_panier", width: 150 },
     { field: "date achat", headerName: "date achat", width: 150 },
     { field: "id_article", headerName: "id_article", width: 150 },

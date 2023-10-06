@@ -5,6 +5,7 @@ import bcrypt, json, csv
 from . import CRUD, models, schemas
 from .database import SessionLocal, engine, engine_read
 from datetime import datetime
+from .settings import settings
 from sqlalchemy.sql.expression import text
 
 
@@ -13,6 +14,13 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+@app.get("/info")
+async def info():
+    return {
+        "app_name": settings.app_name,
+        "admin_email": settings.admin_email,
+        "items_per_user": settings.items_per_user,
+    }
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -72,6 +80,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 #endregion
 
 # ------------------------------------------------------ #
+
 #region : Remplissage de la base de données Clients (json avec tableau )
 @app.post("/create_Clients/", response_model=schemas.Clients)
 def client(client: schemas.Clients,  db: Session = Depends(get_db)):
@@ -154,7 +163,7 @@ def upload_r_panier_articles(file: UploadFile = File(...), db: Session = Depends
     try:
         contents = file.file.read()
         r_panier_articles = csv.reader(contents.decode("utf-8").splitlines(), delimiter=";")
-        next(r_panier_articles)  # Skip header
+        next(r_panier_articles) 
 
         created_r_panier_articles = []
         for r_panier_article in r_panier_articles:
@@ -175,6 +184,7 @@ def upload_r_panier_articles(file: UploadFile = File(...), db: Session = Depends
     except Exception as e:
         raise HTTPException(status_code=500, detail="Erreur interne du serveur : {}".format(e))
  #endregion
+
 # ------------------------------------------------------ #
 
 #region : Récupération des données pour la visualisation 
