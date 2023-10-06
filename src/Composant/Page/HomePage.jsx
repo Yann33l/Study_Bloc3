@@ -4,7 +4,8 @@ import Table2 from '../Table/Table2_moyenne_pannier_par_CSP';
 import Table3 from '../Table/Table3_Collecte';
 import Table4 from '../Table/Table4_Ensemble';
 import Graph1 from '../Graph/Graph1';
-import Graph2 from '../Graph/Graph1-2';
+import Graph1_2 from '../Graph/Graph1-2';
+import Graph2 from '../Graph/Graph2';
 
 
 
@@ -24,15 +25,14 @@ function HomePage({ isAdmin }) {
       mainContent = (
           <div >
             <Graph1  />
-            <Graph2  />
+            <Graph1_2  />
           </div>)
           ;
       break;
-    case 'Table1':
+    case 'Graph2':
       mainContent = (
           <div>
-            <h1>Depenses_CSP_ClasseArticle</h1>
-            <Table1  />
+            <Graph2  />
           </div>)
           ;
       break;
@@ -78,8 +78,8 @@ function HomePage({ isAdmin }) {
                 <li className="bouton" onClick={() => handleButtonClick('Graph1')}>
                   graphe1
                 </li>
-                <li className="bouton" onClick={() => handleButtonClick('Table2')}>
-                  Tab2
+                <li className="bouton" onClick={() => handleButtonClick('Graph2')}>
+                  graphe2
                 </li>
                 <li className="bouton" onClick={() => handleButtonClick('Table3')}>
                   Tab3

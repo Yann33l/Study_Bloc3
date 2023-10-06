@@ -61,7 +61,7 @@ scales: {
 },
 };
 
-const Graph2 = () => {
+const Graph1_2 = () => {
     const [data, setData] = useState({
         labels: [],
         datasets: [],
@@ -115,8 +115,6 @@ const Graph2 = () => {
     };
 
 
-
-
     return (
         <div style={{ height: "500px", color: 'white'}}>
             <h2>Répartition des dépenses par catégorie de vêtement pour chaque CSP</h2>
@@ -125,4 +123,4 @@ const Graph2 = () => {
     );
 }
 
-export default Graph2;
+export default Graph1_2;
