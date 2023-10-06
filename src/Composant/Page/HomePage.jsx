@@ -63,7 +63,7 @@ function HomePage({ isAdmin }) {
     case 'Table4':
       mainContent = (
           <div>
-            <h1>Ensemble</h1>
+            <h1 style={{color: 'white'}}>Vue ensemble</h1>
             <Table4  />
           </div>)
           ;
@@ -84,16 +84,10 @@ function HomePage({ isAdmin }) {
             <nav className="menu-nav">
               <ul>
                 <li className="bouton" onClick={() => handleButtonClick('Graph1')}>
-                  graphe1
+                  Dépenses 
                 </li>
                 <li className="bouton" onClick={() => handleButtonClick('Graph2')}>
-                  graphe2
-                </li>
-                <li className="bouton" onClick={() => handleButtonClick('Graph3')}>
-                graphe2
-                </li>
-                <li className="bouton" onClick={() => handleButtonClick('Graphe4')}>
-                graphe2
+                  Paniers
                 </li>
               </ul>
             </nav>
@@ -106,16 +100,16 @@ function HomePage({ isAdmin }) {
             <nav className="menu-nav">
               <ul>
                 <li className="bouton" onClick={() => handleButtonClick('Table1')}>
-                  Tab1
+                Dépense par cathegorie et par CSP
                 </li>
                 <li className="bouton" onClick={() => handleButtonClick('Table2')}>
-                  Tab2
+                Moyenne du pannier par CSP
                 </li>
                 <li className="bouton" onClick={() => handleButtonClick('Table3')}>
-                  Tab3
+                Collecte
                 </li>
                 <li className="bouton" onClick={() => handleButtonClick('Table4')}>
-                  Tab4
+                Vue ensemble
                 </li>
               </ul>
             </nav>

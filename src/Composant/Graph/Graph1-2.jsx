@@ -36,8 +36,8 @@ plugins: {
 },
 layout: {
     padding: {
-        left: 0, 
-        right: 0, 
+        left: 30, 
+        right: 30, 
         top: 50, 
         bottom: 100 
     },
@@ -127,7 +127,7 @@ const Graph1_2 = () => {
 
     return (
         <div style={{ height: "600px", color: 'white'}}>
-            <h1>Répartition des dépenses par catégorie de vêtement pour chaque CSP</h1>
+            <h1 style={{textAlign: 'center'}}>Répartition des dépenses par catégorie de vêtement pour chaque CSP</h1>
             <Bar data={data} options={chartOptions} />
         </div>
     );

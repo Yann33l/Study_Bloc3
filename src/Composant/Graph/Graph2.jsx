@@ -27,13 +27,10 @@ const chartOptions = {
 
     layout: {
         padding: {
-            left: 0,
-            right: 0,
+            left: 20,
+            right: 20,
             top: 50,
             bottom: 100,
-        },
-        background: {
-            color: 'white', // Couleur de fond du graphique
         },
     },
     plugins: {
@@ -131,7 +128,7 @@ const Graph2 = () => {
 
     return (
         <div style={{ height: "500px", color: 'white' }}>
-            <h1>Répartition des dépenses par CSP et moyenne panier</h1>
+            <h1 style={{textAlign: 'center'}}>Moyenne panier par classe socioprofessionelle </h1>
             <Bar data={data} options={chartOptions} />
         </div>
     );

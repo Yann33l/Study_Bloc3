@@ -3,6 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { API_URL } from '../API/api';
+import { alignProperty } from '@mui/material/styles/cssUtils';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -99,7 +100,7 @@ const Graph1 = () => {
 
     return (
         <div style={{ height: "500px", color: 'white' }}>
-            <h1>Dépenses par classe socioprofessionelle</h1>
+            <h1 style={{textAlign: 'center'}}>Dépenses par classe socioprofessionelle (CSP)</h1>
             <Doughnut data={data}  options={chartOptions}/>
         </div>
     );
