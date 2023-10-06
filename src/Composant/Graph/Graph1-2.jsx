@@ -77,7 +77,7 @@ const Graph1_2 = () => {
                     const uniqueCategories = [...new Set(responseData.results.map((row) => row.categorie_vetement))];
                     const uniqueCSPValues = [...new Set(responseData.results.map((row) => row.CSP))];
 
-                    const categoryColors = generateRandomColors(uniqueCategories.length);
+                    const categoryColors = generateRandomColors(uniqueCSPValues.length);
 
                     const datasets = uniqueCSPValues.map((csp, cspIndex) => {
                         const dataValues = uniqueCategories.map((category) => {

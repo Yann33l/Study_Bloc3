@@ -2,8 +2,6 @@
   "name": "study3",
   "private": true,
   "version": "0.0.0",
-  "homrpage": "https://Yann33l.github.iom/Study_Bloc3",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
