@@ -99,7 +99,7 @@ const Graph1 = () => {
 
     return (
         <div style={{ height: "500px", color: 'white' }}>
-            <h1>Dépenses par classe</h1>
+            <h1>Dépenses par classe socioprofessionelle</h1>
             <Doughnut data={data}  options={chartOptions}/>
         </div>
     );

@@ -22,26 +22,24 @@ ChartJS.register(
   );
 
 const chartOptions = {
-responsive: true, // Désactiver la réponse automatique
+responsive: true, 
 maintainAspectRatio: false,
 plugins: {
     legend: {
         display: true,
-        position: 'bottom', // Position de la légende (peut être 'top', 'bottom', 'left' ou 'right')
+        position: 'bottom',
         labels: {
-            font: {
-                size: 16, // Taille de la police de la légende
+            font: {size: 16},
+            color: 'white' 
             },
-            color: 'white', // Couleur du texte de la légende
-        },
     },
 },
 layout: {
     padding: {
-        left: 0, // Marge à gauche
-        right: 0, // Marge à droite
-        top: 50, // Marge en haut
-        bottom: 100, // Marge en bas
+        left: 0, 
+        right: 0, 
+        top: 50, 
+        bottom: 100 
     },
 },        
 scales: {
@@ -49,6 +47,12 @@ scales: {
         title: {
             display: true,
             text: 'Catégories',
+            color: 'white',
+            font: {size: 20}
+        },
+        ticks: {
+            font: {size: 15},
+            color: 'white', 
         },
     },
     y: {
@@ -56,8 +60,14 @@ scales: {
         title: {
             display: true,
             text: 'Dépenses',
+            color: 'white',
+            font: {size: 20}, 
         },
-    },
+        ticks: {
+            font: {size: 15},
+            color: 'white', 
+        },
+    }, 
 },
 };
 
@@ -116,8 +126,8 @@ const Graph1_2 = () => {
 
 
     return (
-        <div style={{ height: "500px", color: 'white'}}>
-            <h2>Répartition des dépenses par catégorie de vêtement pour chaque CSP</h2>
+        <div style={{ height: "600px", color: 'white'}}>
+            <h1>Répartition des dépenses par catégorie de vêtement pour chaque CSP</h1>
             <Bar data={data} options={chartOptions} />
         </div>
     );

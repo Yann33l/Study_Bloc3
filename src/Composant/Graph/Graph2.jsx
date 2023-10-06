@@ -36,16 +36,21 @@ const chartOptions = {
             color: 'white', // Couleur de fond du graphique
         },
     },
+    plugins: {
+        legend: {
+            display: false,
+        },
+    },
     scales: {
-        x: {
+        x: {display: true,
             title: {
                 display: false,
             },
             ticks: {
                 font: {
-                    size: 16,
-                    color: 'black', // Couleur du texte de l'axe x
+                    size: 15,
                 },
+                color: 'white', 
             },
         },
         y: {
@@ -55,14 +60,16 @@ const chartOptions = {
                 text: 'Moyenne Panier',
                 font: {
                     size: 20,
-                    color: 'black',
                 },
+                color: 'white', 
+
             },
             ticks: {
                 font: {
                     size: 16,
-                    color: 'black',
                 },
+                color: 'white', 
+
             },
         },
     },
@@ -124,7 +131,7 @@ const Graph2 = () => {
 
     return (
         <div style={{ height: "500px", color: 'white' }}>
-            <h2>Répartition des dépenses par CSP et moyenne panier</h2>
+            <h1>Répartition des dépenses par CSP et moyenne panier</h1>
             <Bar data={data} options={chartOptions} />
         </div>
     );
