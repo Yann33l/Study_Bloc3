@@ -1,1 +1,1 @@
-scalingo --app main:app
+scalingo --uvicorn main:app
