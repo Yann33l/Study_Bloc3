@@ -5,7 +5,7 @@ import bcrypt, json, csv
 from . import CRUD, models, schemas
 from .database import SessionLocal, engine, engine_read
 from datetime import datetime
-from .settings import settings
+""" from .settings import settings """
 from sqlalchemy.sql.expression import text
 
 
@@ -14,13 +14,14 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-@app.get("/info")
+""" @app.get("/info")
 async def info():
     return {
         "app_name": settings.app_name,
         "admin_email": settings.admin_email,
         "items_per_user": settings.items_per_user,
-    }
+    } """
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -57,7 +58,7 @@ def Connexion(email: str, password: str, db: Session = Depends(get_db)):
 def user(user: schemas.UserCreate,  db: Session = Depends(get_db)):
         user_exists = CRUD.get_user_by_email(db, email=user.Email)
         if user_exists:
-           raise HTTPException(status_code=400, detail="Email already registered")
+           raise HTTPException(status_code=400, detail="Email déjà utilisé")
         else:       
             salt = bcrypt.gensalt(12)
             user.Password = bcrypt.hashpw(user.Password, salt)                       
@@ -74,7 +75,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = CRUD.get_user_by_ID(db, id=user_id)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
     return db_user
 
 #endregion
