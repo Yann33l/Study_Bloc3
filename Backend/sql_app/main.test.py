@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from . import models, schemas
 from .database import SessionLocal, engine
-from .main import app, get_db
+from .routes import app, get_db
 import bcrypt
 
 models.Base.metadata.create_all(bind=engine)

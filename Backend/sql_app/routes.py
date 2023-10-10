@@ -2,15 +2,14 @@ from fastapi import Depends, FastAPI, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 import bcrypt, json, csv
-from Backend.sql_app import CRUD, models, schemas
-from Backend.sql_app.database import SessionLocal, engine, engine_read
+from . import CRUD, models, schemas
+from .database import SessionLocal, engine, engine_read
 from datetime import datetime
-""" from Backend.sql_app.settings import settings """
+""" from .settings import settings """
 from sqlalchemy.sql.expression import text
 
 
 models.Base.metadata.create_all(bind=engine)
-
 
 app = FastAPI()
 
@@ -20,9 +19,9 @@ async def info():
     return {
         "app_name": settings.app_name,
         "admin_email": settings.admin_email,
-        "items_per_user": settings.items_per_user,
+        "items_per_user": settings.items_per_user, 
     } """
-    
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
