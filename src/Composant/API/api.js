@@ -1,6 +1,11 @@
 import axios from 'axios'
 
-export const API_URL = 'http://127.0.0.1:8000'; 
+//Local
+//export const API_URL = 'http://127.0.0.1:8000'; 
+
+//Scalingo
+
+export const API_URL = 'https://goldenline.osc-fr1.scalingo.io';
 
 export const checkCredentials = async (Email, Password) => {
 
