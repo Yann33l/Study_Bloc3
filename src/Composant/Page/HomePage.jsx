@@ -132,7 +132,7 @@ function HomePage({ isAdmin }) {
           <img
             id="logo"
             alt="logo"
-            src="../../public/Image/logo/png/logo-no-background.png"
+            src="/Image/logo/png/logo-no-background.png"
 /*             src="/public/Image/logo/png/logo-no-background.png"
  */            height="120"
           />
