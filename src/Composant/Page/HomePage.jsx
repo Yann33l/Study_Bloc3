@@ -131,7 +131,8 @@ function HomePage({ isAdmin }) {
           <img
             id="logo"
             alt="logo"
-            src="/public/Image/logo/png/logo-no-background.png"
+            src="../../public/image/logo/png*logo-no-background.png"
+            //src="/public/Image/logo/png/logo-no-background.png"
             height="120"
           />
         </div>
