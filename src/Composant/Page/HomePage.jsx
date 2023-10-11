@@ -6,6 +6,7 @@ import Table4 from '../Table/Table4_Ensemble';
 import Graph1 from '../Graph/Graph1';
 import Graph1_2 from '../Graph/Graph1-2';
 import Graph2 from '../Graph/Graph2';
+ 
 
 
 
@@ -131,7 +132,7 @@ function HomePage({ isAdmin }) {
           <img
             id="logo"
             alt="logo"
-            src="../../public/image/logo/png/logo-no-background.png"
+            src="../../public/Image/logo/png/logo-no-background.png"
 /*             src="/public/Image/logo/png/logo-no-background.png"
  */            height="120"
           />
