@@ -8,10 +8,11 @@ class users(Base):
 
     ID = Column(Integer,primary_key=True,index=True)
     Email = Column(String(45))
-    Password = Column(LargeBinary)
     First_connexion = Column(DateTime)
     Last_change_password = Column(DATE)
     Admin = Column(Boolean)
+    Password = Column(LargeBinary)
+
 
 class clients(Base):
     __tablename__ = "clients"
@@ -25,7 +26,7 @@ class cat_socio_pro(Base):
     __tablename__ = "cat_socio_pro"
 
     ID = Column(Integer,primary_key=True,index=True)
-    libelle_CSP = Column(String(45))
+    libelle_CSP = Column(String(150))
     id_CSP = Column(Integer)
 
 class articles(Base):
