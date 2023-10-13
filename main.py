@@ -1,13 +1,16 @@
+" Main file of the API."
+from datetime import datetime
+import json
+import csv
+import bcrypt
 from fastapi import Depends, FastAPI, HTTPException, UploadFile, File
-from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-import bcrypt, json, csv
+from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import text
 from Backend.sql_app import CRUD, models, schemas
 from Backend.sql_app.database import SessionLocal, engine, engine_read
-from datetime import datetime
-""" from Backend.sql_app.settings import settings """
-from sqlalchemy.sql.expression import text
 
+""" from Backend.sql_app.settings import settings """
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -22,7 +25,7 @@ async def info():
         "admin_email": settings.admin_email,
         "items_per_user": settings.items_per_user,
     } """
-    
+   
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
