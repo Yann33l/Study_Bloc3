@@ -82,7 +82,7 @@ function HomePage({ isAdmin }) {
     case 'graphiques':
       mainContent = (
         <div>
-            <nav className="menu-nav">
+            <nav className="sous_menu-nav">
               <ul>
                 <li className="bouton" onClick={() => handleButtonClick('Graph1')}>
                   Dépenses 
@@ -98,7 +98,7 @@ function HomePage({ isAdmin }) {
     case 'exporter':
       mainContent = (
         <div>
-            <nav className="menu-nav">
+            <nav className="sous_menu-nav">
               <ul>
                 <li className="bouton" onClick={() => handleButtonClick('Table1')}>
                 Dépense par cathegorie et par CSP
@@ -132,7 +132,7 @@ function HomePage({ isAdmin }) {
           <img
             id="logo"
             alt="logo"
-            src="/Image/logo/png/logo-no-background.png"
+            src="/Image/logo/png/logo-no-background2.png"
 /*             src="/public/Image/logo/png/logo-no-background.png"
  */            height="120"
           />
