@@ -17,7 +17,7 @@ else:
     # Environnement en ligne
     ENV = os.environ.get("ENV", "online")
 
-Login = os.getenv('Login')
+Login = os.getenv("Login")
 Password = os.getenv("Password")
 Server_Host = os.getenv("Server_Host")
 Port = os.getenv("Port")
