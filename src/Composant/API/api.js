@@ -1,11 +1,21 @@
 import axios from 'axios'
 
+export let API_URL;
+
+if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+    // Environnement local
+    API_URL = 'http://127.0.0.1:8000';
+} else {
+    // Environnement en ligne
+    API_URL = 'https://goldenline.osc-fr1.scalingo.io';
+    
+}
 //Local
 //export const API_URL = 'http://127.0.0.1:8000'; 
 
 //Scalingo
+//export const API_URL = 'https://goldenline.osc-fr1.scalingo.io';
 
-export const API_URL = 'https://goldenline.osc-fr1.scalingo.io';
 
 export const checkCredentials = async (Email, Password) => {
 
