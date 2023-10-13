@@ -15,10 +15,14 @@ else:
     # Environnement en ligne
     ENV = os.environ.get("ENV", "online")
 
-
+Login = os.getenv("Login")
+Password = os.getenv("Password")
+Server_Host = os.getenv("Server_Host")
+Port = os.getenv("Port")
+Database = os.getenv("Database")
 
 # scalingo
-SCALINGO_MYSQL_URL = "mysql://goldenline_7195:MLysrp1Px4WZhs0ZEJAV@94e79af0-02d8-4af3-862a-4516a9e45f09.goldenline-7195.mysql.a.osc-fr1.scalingo-dbs.com:30567/goldenline_7195"
+SCALINGO_MYSQL_URL = f"mysql://{Login}:{Password}@{Server_Host}:{Port}/{Database}"
 
 # Local
 SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:Study_projet3@localhost:3310/goldenline"
