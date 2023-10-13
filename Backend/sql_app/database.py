@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Détection de l'environnement
 local_ip = socket.gethostbyname(socket.gethostname())
 
 if local_ip == '192.168.1.64':

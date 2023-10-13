@@ -1,5 +1,5 @@
 from sqlalchemy import Column, LargeBinary
-from sqlalchemy.sql.sqltypes import Integer, String, DateTime, DATE,Boolean
+from sqlalchemy.sql.sqltypes import Integer, String, DateTime, DATE,Boolean, Float
 
 from .database import Base
 
@@ -32,9 +32,9 @@ class articles(Base):
     __tablename__ = "articles"
 
     ID = Column(Integer,primary_key=True,index=True)
-    libelle_article = Column(String(45))
-    prix_vente = Column(Integer)
-    cout = Column(Integer)
+    libelle_article = Column(String(200))
+    prix_vente = Column(Float)
+    cout = Column(Float)
     id_categorie_article = Column(Integer)
 
 class categories_articles(Base):
@@ -48,8 +48,8 @@ class paniers(Base):
     __tablename__ = "paniers"
 
     ID = Column(Integer,primary_key=True,index=True)
-    id_client = Column(Integer)
     date_achat = Column(DATE)
+    id_client = Column(Integer)
 
 class r_panier_article(Base):
     __tablename__ = "r_panier_article"
