@@ -4,8 +4,10 @@ import socket
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from dotenv import load_dotenv
 
 
+load_dotenv()
 
 local_ip = socket.gethostbyname(socket.gethostname())
 
@@ -15,11 +17,13 @@ else:
     # Environnement en ligne
     ENV = os.environ.get("ENV", "online")
 
-Login = os.getenv("Login")
+Login = os.getenv('Login')
 Password = os.getenv("Password")
 Server_Host = os.getenv("Server_Host")
 Port = os.getenv("Port")
 Database = os.getenv("Database")
+
+print(Login, Password, Server_Host, Port, Database)
 
 # scalingo
 SCALINGO_MYSQL_URL = f"mysql://{Login}:{Password}@{Server_Host}:{Port}/{Database}"
