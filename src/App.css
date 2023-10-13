@@ -1,6 +1,6 @@
 /* app */
 .Connexion {
-  color: #F3A83C;
+  color: #D4AF37;
   font-family: 'Wallpoet_Regular';
   position: relative;
   height: 50vh;
@@ -48,26 +48,26 @@ body {background-color: rgb(54, 54, 54);
   margin-top :5px;
   margin-left :5px;
 }
+
 nav.menu-nav {
-    font-family: 'Wallpoet_Regular';
-    text-align: center;
-    display:inline-block;
-    vertical-align:top; 
-    margin: 20px;
+  font-family: 'Wallpoet_Regular';
+  text-align: center;
+  display:inline-block;
+  vertical-align:top; 
+  margin: 20px;
 }
 
 nav.menu-nav ul li{
     list-style-type: none;
     display: inline-block;
-    width: 130px;
     padding:5px 10px;
-    border-right-color: #F3A83C;
-    border-bottom-color: #F3A83C;
+    border-right-color: #D4AF37;
+    border-bottom-color: #D4AF37;
     font-size: 20px;
   }
 
 nav.menu-nav ul li.bouton {
-    color: #F3A83C;
+    color: #D4AF37;
     text-decoration: none;
   }
 
@@ -76,24 +76,21 @@ nav.menu-nav ul li.bouton {
 }
 
 nav.menu-nav ul li.bouton:hover{
-  width: 150px;
-  margin: 0 10px 0 20px;
   text-align: center;
-  padding:5px 10px;
   border-radius: 0 0 15px 0;
-  background-color: rgb(102, 102, 102);
+  background-color: rgb(65, 65, 65);
   transition: 0.3s;
   border-right: solid 2px;
   border-bottom: solid 1px;
-  border-right-color: #F3A83C;
-  border-bottom-color: #F3A83C;
+  border-right-color: #D4AF37;
+  border-bottom-color: #D4AF37;
   vertical-align: center;
 }
 
 footer {
   padding: 0 0 0 10px;
   font-size: 10px;
-  color: #F3A83C;
+  color: #D4AF37;
 }
 
 /* ZoneTravail */
