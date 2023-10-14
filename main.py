@@ -10,7 +10,6 @@ from sqlalchemy.sql.expression import text
 from Backend.sql_app import CRUD, models, schemas
 from Backend.sql_app.database import SessionLocal, engine, engine_read
 
-""" from Backend.sql_app.settings import settings """
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -18,14 +17,6 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-""" @app.get("/info")
-async def info():
-    return {
-        "app_name": settings.app_name,
-        "admin_email": settings.admin_email,
-        "items_per_user": settings.items_per_user,
-    } """
-   
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -147,8 +138,8 @@ def upload_paniers(file: UploadFile = File(...), db: Session = Depends(get_db)):
         for panier in paniers:
             panier_data = {
                 "ID": int(panier[0]),
-                "id_client": int(panier[2]),
-                "date_achat": datetime.strptime(panier[1], "%d/%m/%Y").date()
+                "date_achat": datetime.strptime(panier[1], "%d/%m/%Y").date(),
+                "id_client": int(panier[2])
             }
 
             panier = schemas.paniers(**panier_data)
@@ -199,12 +190,12 @@ def get_depenses_CSP_ClasseArticle():
     try:
         with engine_read.connect() as connection:
             query = text("SELECT libelle_CSP as CSP, round(sum(quantite_article*prix_vente), 2) as depenses, libelle_categorie as categorie_vetement \
-                            FROM goldenline.clients c \
-                            LEFT JOIN goldenline.cat_socio_pro csp on csp.ID = c.id_CSP \
-                            LEFT JOIN goldenline.paniers p on p.id_client = c.ID \
-                            LEFT JOIN goldenline.r_panier_article r_pa on r_pa.id_panier = p.ID \
-                            LEFT JOIN goldenline.articles a on a.ID = r_pa.id_article \
-                            LEFT JOIN goldenline.categories_articles ca on a.id_categorie_article = ca.ID \
+                            FROM clients c \
+                            LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
+                            LEFT JOIN paniers p on p.id_client = c.ID \
+                            LEFT JOIN r_panier_article r_pa on r_pa.id_panier = p.ID \
+                            LEFT JOIN articles a on a.ID = r_pa.id_article \
+                            LEFT JOIN categories_articles ca on a.id_categorie_article = ca.ID \
                             WHERE libelle_categorie IS NOT NULL \
                             GROUP BY libelle_CSP, libelle_categorie \
                             ORDER BY 1, 3;")
@@ -228,11 +219,11 @@ def get_moyenne_pannier_par_CSP():
     try:
         with engine_read.connect() as connection:
             query = text("SELECT libelle_CSP as CSP, round(sum(quantite_article*prix_vente)/count(distinct id_panier),2) as Moy_panier \
-                        FROM goldenline.clients c \
-                        LEFT JOIN goldenline.cat_socio_pro csp on csp.ID = c.id_CSP \
-                        left join goldenline.paniers p on p.id_client = c.ID \
-                        left join goldenline.r_panier_article r_pa on r_pa.id_panier = p.ID \
-                        left join goldenline.articles a on a.ID = r_pa.id_article \
+                        FROM clients c \
+                        LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
+                        left join paniers p on p.id_client = c.ID \
+                        left join r_panier_article r_pa on r_pa.id_panier = p.ID \
+                        left join articles a on a.ID = r_pa.id_article \
                         where prix_vente is not null \
                         group by libelle_CSP \
                         ;")
@@ -259,18 +250,18 @@ def get_Collecte():
                         prix_panier.PPA as Prix_panier,  \
                         ROUND(SUM(quantite_article * prix_vente), 2) AS montant,  \
                         libelle_categorie AS categorie_article  \
-                        FROM goldenline.clients c  \
-                        LEFT JOIN goldenline.cat_socio_pro csp ON csp.ID = c.id_CSP \
-                        LEFT JOIN goldenline.paniers p ON p.id_client = c.ID \
-                        LEFT JOIN goldenline.r_panier_article r_pa ON r_pa.id_panier = p.ID \
-                        LEFT JOIN goldenline.articles a ON a.ID = r_pa.id_article \
-                        LEFT JOIN goldenline.categories_articles ca ON ca.id = a.id_categorie_article \
+                        FROM clients c  \
+                        LEFT JOIN cat_socio_pro csp ON csp.ID = c.id_CSP \
+                        LEFT JOIN paniers p ON p.id_client = c.ID \
+                        LEFT JOIN r_panier_article r_pa ON r_pa.id_panier = p.ID \
+                        LEFT JOIN articles a ON a.ID = r_pa.id_article \
+                        LEFT JOIN categories_articles ca ON ca.id = a.id_categorie_article \
                         LEFT JOIN ( \
                             SELECT r_pa.id_panier AS panier_id, \
                                 ROUND(SUM(quantite_article * prix_vente), 2) AS PPA \
-                            FROM goldenline.paniers p \
-                            LEFT JOIN goldenline.r_panier_article r_pa ON r_pa.id_panier = p.ID \
-                            LEFT JOIN goldenline.articles a ON a.ID = r_pa.id_article \
+                            FROM paniers p \
+                            LEFT JOIN r_panier_article r_pa ON r_pa.id_panier = p.ID \
+                            LEFT JOIN articles a ON a.ID = r_pa.id_article \
                             WHERE prix_vente IS NOT NULL \
                             GROUP BY r_pa.id_panier) as prix_panier  \
                             ON r_pa.id_panier = prix_panier.panier_id \
@@ -299,12 +290,12 @@ def get_visu_ensemble():
     try:
         with engine_read.connect() as connection:
             query = text("SELECT num_client, nbr_enfants, libelle_CSP, id_panier, date_achat, id_article, quantite_article, prix_vente, cout, libelle_categorie \
-                        FROM goldenline.clients c \
-                        LEFT JOIN goldenline.cat_socio_pro csp on csp.ID = c.id_CSP \
-                        LEFT JOIN goldenline.paniers p on p.id_client = c.ID \
-                        LEFT JOIN goldenline.r_panier_article r_pa on r_pa.id_panier = p.ID \
-                        LEFT JOIN goldenline.articles a on a.ID = r_pa.id_article \
-                        LEFT JOIN goldenline.categories_articles ca on a.id_categorie_article = ca.ID \
+                        FROM clients c \
+                        LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
+                        LEFT JOIN paniers p on p.id_client = c.ID \
+                        LEFT JOIN r_panier_article r_pa on r_pa.id_panier = p.ID \
+                        LEFT JOIN articles a on a.ID = r_pa.id_article \
+                        LEFT JOIN categories_articles ca on a.id_categorie_article = ca.ID \
                         ;") 
             result = connection.execute(query)
 
