@@ -43,21 +43,29 @@ def Connexion(email: str, password: str, db: Session = Depends(get_db)):
         if bcrypt.checkpw(password.encode('utf-8'), bytes(user.Password)):
             return schemas.UserBase(
                 Email=user.Email,
-                Admin=user.Admin
+                Admin=user.Admin,
+                Autorisation=user.Autorisation,
             )
-        else: 
+        else:
             raise HTTPException(status_code=404, detail="Mot de passe incorrect")
 
 
 @app.post("/create_users/", response_model=schemas.UserCreate)
-def user(user: schemas.UserCreate,  db: Session = Depends(get_db)):
-        user_exists = CRUD.get_user_by_email(db, email=user.Email)
-        if user_exists:
-           raise HTTPException(status_code=400, detail="Email already registered")
-        else:       
-            salt = bcrypt.gensalt(12)
-            user.Password = bcrypt.hashpw(user.Password, salt)                       
-            return CRUD.create_user(db, user)
+def create_users(email: str, password: str, db: Session = Depends(get_db)):
+    user_exists = CRUD.get_user_by_email(db, email)
+    if user_exists:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    else:
+        salt = bcrypt.gensalt(12)
+        password_byte = password.encode('utf-8')
+        user = schemas.UserCreate(
+            Email=email,
+            Password = bcrypt.hashpw(password_byte, salt),
+            Autorisation = False,
+            Admin = False,
+            First_connexion = None,
+            Last_change_password = datetime.now().date())
+        return CRUD.create_user(db, user)
 
 
 @app.get("/users/", response_model=list[schemas.UserBase])
@@ -69,6 +77,13 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 @app.get("/users/{user_id}", response_model=schemas.UserBase)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = CRUD.get_user_by_ID(db, id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
+@app.get("/userByEmail/", response_model=schemas.UserBase)
+def read_user_email(email: str, db: Session = Depends(get_db)):
+    db_user = CRUD.get_user_by_email(db, email)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
