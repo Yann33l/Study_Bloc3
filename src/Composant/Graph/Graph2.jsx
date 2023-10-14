@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { API_URL } from '../API/api';
 import { Bar } from 'react-chartjs-2';
+import { generateRandomColors } from './Graph_style';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -21,6 +22,7 @@ ChartJS.register(
     Legend
 );
 
+// Options du graphique
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -98,14 +100,12 @@ const Graph2 = () => {
                         return moyennePannier;
                     });
 
-                    // Générer des couleurs aléatoires pour les barres
-                    const backgroundColors = generateRandomColors(uniqueCSPValues.length);
 
                     setData({
                         labels: uniqueCSPValues,
                         datasets: [{
                             data: dataValues,
-                            backgroundColor: backgroundColors,
+                            backgroundColor: generateRandomColors(uniqueCSPValues.length),
                         }],
                     });
                 }
@@ -117,14 +117,6 @@ const Graph2 = () => {
         getMoyennePannierParCSP();
     }, []);
 
-    const generateRandomColors = (count) => {
-        const colors = [];
-        for (let i = 0; i < count; i++) {
-            const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.7)`;
-            colors.push(color);
-        }
-        return colors;
-    };
 
     return (
         <div style={{ height: "500px", color: 'white' }}>

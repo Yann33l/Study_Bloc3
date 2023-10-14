@@ -73,9 +73,11 @@ nav.menu-nav ul li.bouton {
   }
 
   nav.menu-nav ul li.bouton:hover{
+    
     border-radius: 0 0 15px 0;
     background-color: rgb(65, 65, 65);
     transition: 0.3s;
+    padding:5px 8px;
     border-right: solid 2px;
     border-bottom: solid 1px;
     border-right-color: #D4AF37;

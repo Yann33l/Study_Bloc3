@@ -3,10 +3,11 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { API_URL } from '../API/api';
-import { alignProperty } from '@mui/material/styles/cssUtils';
+import { generateRandomColors } from './Graph_style';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+// Options du graphique
 const chartOptions = {
     responsive: true, // Désactiver la réponse automatique
     maintainAspectRatio: false,
@@ -33,37 +34,50 @@ const chartOptions = {
 };
 
 
+// Composant du graphique
 const Graph1 = () => {
     const [data, setData] = useState({
         labels: [],
         datasets: [
             {
                 data: [],
-                backgroundColor: [], // Vous pouvez personnaliser les couleurs ici
+                backgroundColor: [], 
             },
         ],
     });
 
-    useEffect(() => {
+
+        // Fonction pour regrouper les dépenses par CSP identique
+        const groupByCSP = (data) => {
+            const groupedData = {};
+            data.forEach((row) => {
+                if (!groupedData[row.CSP]) {
+                    groupedData[row.CSP] = [];
+                }
+                groupedData[row.CSP].push(row);
+            });
+            return groupedData;
+        };
+
+        // Fonction pour récupérer les dépenses par CSP
         const getDepenses_CSP_ClasseArticle = async () => {
             try {
                 const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`);
                 const responseData = response.data;
 
-                // Assurez-vous que responseData.results est défini avant de mapper
                 if (responseData.results) {
                     const groupedData = groupByCSP(responseData.results);
 
                     const labels = Object.keys(groupedData);
+                    // Calculer le total des dépenses pour chaque CSP
                     const values = Object.values(groupedData).map(group => group.reduce((acc, curr) => acc + curr.depenses, 0));
-                    const backgroundColor = generateRandomColors(labels.length);
 
                     setData({
                         labels: labels,
                         datasets: [
                             {
                                 data: values,
-                                backgroundColor: backgroundColor,
+                                backgroundColor: generateRandomColors(labels.length),
                             },
                         ],
                     });
@@ -73,31 +87,11 @@ const Graph1 = () => {
             }
         };
 
+    useEffect(() => {
         getDepenses_CSP_ClasseArticle();
     }, []);
 
-    // Fonction pour regrouper les dépenses par CSP identique
-    const groupByCSP = (data) => {
-        const groupedData = {};
-        data.forEach((row) => {
-            if (!groupedData[row.CSP]) {
-                groupedData[row.CSP] = [];
-            }
-            groupedData[row.CSP].push(row);
-        });
-        return groupedData;
-    };
-
-    // Fonction pour générer des couleurs aléatoires
-    const generateRandomColors = (count) => {
-        const colors = [];
-        for (let i = 0; i < count; i++) {
-            const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.7)`;
-            colors.push(color);
-        }
-        return colors;
-    };
-
+            
     return (
         <div style={{ height: "500px", color: 'white' }}>
             <h1 style={{textAlign: 'center'}}>Dépenses par classe socioprofessionelle (CSP)</h1>

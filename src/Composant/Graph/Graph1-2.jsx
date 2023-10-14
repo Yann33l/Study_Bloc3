@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { API_URL } from '../API/api';
 import { Bar } from 'react-chartjs-2';
+import { generateRandomColors } from './Graph_style';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -21,6 +22,7 @@ ChartJS.register(
     Legend
   );
 
+  // Options du graphique
 const chartOptions = {
 responsive: true, 
 maintainAspectRatio: false,
@@ -87,9 +89,7 @@ const Graph1_2 = () => {
                     const uniqueCategories = [...new Set(responseData.results.map((row) => row.categorie_vetement))];
                     const uniqueCSPValues = [...new Set(responseData.results.map((row) => row.CSP))];
 
-                    const categoryColors = generateRandomColors(uniqueCSPValues.length);
-
-                    const datasets = uniqueCSPValues.map((csp, cspIndex) => {
+                    const datasets = uniqueCSPValues.map((csp) => {
                         const dataValues = uniqueCategories.map((category) => {
                             const filteredData = responseData.results.filter((row) => row.CSP === csp && row.categorie_vetement === category);
                             return filteredData.reduce((acc, curr) => acc + curr.depenses, 0);
@@ -97,7 +97,7 @@ const Graph1_2 = () => {
 
                         return {
                             label: csp,
-                            backgroundColor: categoryColors[cspIndex],
+                            backgroundColor: generateRandomColors(uniqueCSPValues.length),
                             data: dataValues,
                         };
                     });
@@ -115,14 +115,6 @@ const Graph1_2 = () => {
         getDepenses_CSP_ClasseArticle();
     }, []);
 
-    const generateRandomColors = (count) => {
-        const colors = [];
-        for (let i = 0; i < count; i++) {
-            const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.7)`;
-            colors.push(color);
-        }
-        return colors;
-    };
 
 
     return (
