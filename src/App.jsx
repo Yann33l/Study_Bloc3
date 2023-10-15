@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import HomePage from './Composant/Page/HomePage';
 import { checkCredentials, checkUser, createUser } from './Composant/API/api';
+import HomePage from './Composant/Page/HomePage';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -70,6 +70,9 @@ function App() {
         <br /><br />
         <label htmlFor="Password">Password<br /></label>
         <input name="Password" type="password" placeholder="Mot de passe" />
+{/*         <br />
+        <label htmlFor="Password">Confirmation password<br /></label>
+        <input name="Password" type="password" placeholder="Mot de passe" /> */}
         <br /><br />
         <button type="submit"> Valider </button>
         

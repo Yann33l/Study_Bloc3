@@ -1,11 +1,10 @@
 " Ce fichier permet de se connecter à la base de données et de créer une session pour les requêtes "
 import os
 import socket
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 load_dotenv()
 
@@ -18,13 +17,13 @@ else:
     # Environnement en ligne
     ENV = os.environ.get("ENV", "online")
 
+# Récupération des variables d'environnement pour scalingo
 Login = os.getenv("Login")
 Password = os.getenv("Password")
 Server_Host = os.getenv("Server_Host")
 Port = os.getenv("Port")
 Database = os.getenv("Database")
 
-print(Login, Password, Server_Host, Port, Database)
 
 # scalingo
 SCALINGO_MYSQL_URL = f"mysql://{Login}:{Password}@{Server_Host}:{Port}/{Database}"

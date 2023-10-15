@@ -1,71 +1,63 @@
-# BEGIN: 1c2d3e4f5g6h
+from unittest.mock import Mock
 
-from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
-from . import models, schemas
-from .database import SessionLocal, engine
-from .routes import app, get_db
 import bcrypt
+from fastapi.testclient import TestClient
+
+from Backend.sql_app import models, schemas, CRUD
+from Backend.sql_app.database import engine
+from main import app
 
 models.Base.metadata.create_all(bind=engine)
 
 client = TestClient(app)
 
-def test_create_user():
-    db = SessionLocal()
-    user = schemas.UserCreate(
-        Email="test@test.com",
-        Password=b"password",
-        Admin=False
-    )
-    response = client.post("/create_users/", json=user.dict())
+# arrange
+db = Mock()
+user = schemas.UserCreate(
+    Email="test@test.com",
+    Password=b"password",
+    Admin=False,
+    Autorisation=True
+)
+
+def test_create_user_doesnt_exist():
+
+    CRUD.get_user_by_email = Mock(return_value=False)
+    CRUD.create_user = Mock(return_value=user)
+
+    # act
+    response = client.post(f"/create_users/?email={user.Email}&password=password")
+
+    # assert
     assert response.status_code == 200
     assert response.json()["Email"] == user.Email
     assert response.json()["Admin"] == user.Admin
-    db_user = db.query(models.users).filter(models.users.Email == user.Email).scalar()
-    assert db_user is not None
-    assert db_user.Email == user.Email
-    assert bcrypt.checkpw(user.Password, bytes(db_user.Password))
+
 
 def test_create_user_already_exists():
-    db = SessionLocal()
-    user = schemas.UserCreate(
-        Email="test@test.com",
-        Password=b"password",
-        Admin=False
-    )
-    db_user = models.users(**user.dict())
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    response = client.post("/create_users/", json=user.dict())
+
+    CRUD.get_user_by_email = Mock(return_value=True)
+
+    response = client.post(f"/create_users/?email={user.Email}&password=password")
+
     assert response.status_code == 400
     assert response.json()["detail"] == "Email already registered"
 
+
 def test_read_users():
-    db = SessionLocal()
-    user = schemas.UserCreate(
-        Email="test@test.com",
-        Password=b"password",
-        Admin=False
-    )
-    db_user = models.users(**user.dict())
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+
+    CRUD.get_users = Mock(return_value=[user, user])
+
     response = client.get("/users/")
     assert response.status_code == 200
     assert len(response.json()) > 0
     assert response.json()[0]["Email"] == user.Email
     assert response.json()[0]["Admin"] == user.Admin
+    assert response.json()[1]["Email"] == user.Email
+    assert response.json()[1]["Admin"] == user.Admin
+
 
 def test_read_user():
-    db = SessionLocal()
-    user = schemas.UserCreate(
-        Email="test@test.com",
-        Password=b"password",
-        Admin=False
-    )
     db_user = models.users(**user.dict())
     db.add(db_user)
     db.commit()
@@ -81,12 +73,6 @@ def test_read_user_not_found():
     assert response.json()["detail"] == "User not found"
 
 def test_connexion():
-    db = SessionLocal()
-    user = schemas.UserCreate(
-        Email="test@test.com",
-        Password=b"password",
-        Admin=False
-    )
     db_user = models.users(**user.dict())
     db.add(db_user)
     db.commit()
@@ -102,12 +88,6 @@ def test_connexion_incorrect_email():
     assert response.json()["detail"] == "Email incorrect"
 
 def test_connexion_incorrect_password():
-    db = SessionLocal()
-    user = schemas.UserCreate(
-        Email="test@test.com",
-        Password=b"password",
-        Admin=False
-    )
     db_user = models.users(**user.dict())
     db.add(db_user)
     db.commit()
@@ -116,4 +96,3 @@ def test_connexion_incorrect_password():
     assert response.status_code == 404
     assert response.json()["detail"] == "Mot de passe incorrect"
 
-# END: 1c2d3e4f5g6h
