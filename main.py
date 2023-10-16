@@ -27,7 +27,7 @@ if ENV == "local":
 else:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["study-bloc3.vercel.app"],
+        allow_origins=["https://goldenline.osc-fr1.scalingo.io/"],
         allow_credentials=True,
         allow_methods=["GET", "POST"],
         allow_headers=["*"],)
