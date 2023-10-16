@@ -19,8 +19,24 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.commit()
     return db_user
 
+def edit_admin_status(db: Session, email: str, admin: bool):
+    db_user = db.query(models.users).filter(models.users.Email == email).scalar()
+    if db_user:
+        db_user.Admin = admin
+        db.commit()
+        db.refresh(db_user)
+    return db_user
+
+def edit_autorisation_status(db: Session, email: str, autorisation: bool):
+    db_user = db.query(models.users).filter(models.users.Email == email).scalar()
+    if db_user:
+        db_user.Autorisation = autorisation
+        db.commit()
+        db.refresh(db_user)
+    return db_user
+
 # Clients
-def get_client_by_ID(db: Session, id: int):
+def get_client_by_ID(db: Session, id:int):
     return db.query(models.clients).filter(models.clients.ID == id).first()
 
 def get_clients(db: Session, skip: int = 0, limit: int = 100):

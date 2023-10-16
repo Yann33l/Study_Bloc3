@@ -55,4 +55,17 @@ const columnsTable4 = [
     { field: "cout", headerName: "cout", width: 150 },
     { field: "categorie", headerName: "categorie", width: 150 },
     ];
-    export { dataTableStyle, dataTableStyle2, columnsTable1, columnsTable2, columnsTable3, columnsTable4 };
+
+
+
+const columnsTable5 = [
+    { field: "Email", headerName: "Email", width: 250 },
+    { field: "Last_change_password", headerName: "Date changement mot de passe", width: 150 },
+    { field: "Admin", headerName: "Admin", width: 100 },
+    { field: "Autorisation", headerName: "Compte actif", width: 100 },
+    { field: "Last_login", headerName: "Dernière connexion", width: 150 },
+];
+
+export { dataTableStyle, dataTableStyle2, columnsTable1, columnsTable2, columnsTable3, columnsTable4, columnsTable5 };
+
+

@@ -100,6 +100,17 @@ def read_user_email(email: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+# Mise à jour du statu Admin d'un utilisateur
+@app.put("/editUserAdmin/", response_model=schemas.UserBase)
+def update_user_Admin(email: str, admin: bool, db: Session = Depends(get_db)):
+    user = CRUD.edit_admin_status(db, email, admin)
+    return user
+
+# Mise à jour du statu Autorisation d'un utilisateur
+@app.put("/editUserAutorisation/", response_model=schemas.UserBase)
+def update_user_Autorisation(email: str, autorisation: bool, db: Session = Depends(get_db)):
+    user = CRUD.edit_autorisation_status(db, email, autorisation)
+    return user
 #endregion
 
 # ------------------------------------------------------ #

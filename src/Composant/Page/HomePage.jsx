@@ -3,6 +3,7 @@ import Table1 from '../Table/Table1_depense_CSP_CatArticle';
 import Table2 from '../Table/Table2_moyenne_pannier_par_CSP';
 import Table3 from '../Table/Table3_Collecte';
 import Table4 from '../Table/Table4_Ensemble';
+import Table5 from '../Table/Table5_utilisateurs';
 import Graph1 from '../Graph/Graph1';
 import Graph1_2 from '../Graph/Graph1-2';
 import Graph2 from '../Graph/Graph2';
@@ -22,53 +23,6 @@ function HomePage({ isAdmin }) {
   // Contenu du main basé sur l'état
   let mainContent;
   switch (content) {
-    case 'Graph1':
-      mainContent = (
-          <div >
-            <Graph1  />
-            <Graph1_2  />
-          </div>)
-          ;
-      break;
-    case 'Graph2':
-      mainContent = (
-          <div>
-            <Graph2  />
-          </div>)
-          ;
-      break;
-    case 'Table1':
-      mainContent = (
-          <div>
-            <h1>Dépense par cathegorie et par CSP</h1>
-            <Table1  />
-          </div>)
-          ;
-      break;
-    case 'Table2':
-      mainContent = (
-          <div>
-            <h1>moyenne du pannier par CSP</h1>
-            <Table2  />
-          </div>)
-          ;
-      break;
-    case 'Table3':
-      mainContent = (
-          <div>
-            <h1>Collecte</h1>
-            <Table3  />
-          </div>)
-          ;
-      break;
-    case 'Table4':
-      mainContent = (
-          <div>
-            <h1 style={{color: 'white'}}>Vue ensemble</h1>
-            <Table4  />
-          </div>)
-          ;
-      break;
     case 'acceuil':
     case 'default':
       mainContent = (
@@ -79,6 +33,7 @@ function HomePage({ isAdmin }) {
         </div>
       );
       break;
+
     case 'graphiques':
       mainContent = (
         <div>
@@ -95,6 +50,22 @@ function HomePage({ isAdmin }) {
         </div>
       );
       break;
+    case 'Graph1':
+      mainContent = (
+          <div >
+            <Graph1  />
+            <Graph1_2  />
+          </div>)
+          ;
+      break;
+    case 'Graph2':
+      mainContent = (
+          <div>
+            <Graph2  />
+          </div>)
+          ;
+      break;
+
     case 'exporter':
       mainContent = (
         <div>
@@ -117,13 +88,49 @@ function HomePage({ isAdmin }) {
         </div>
       );
       break;
+    
+    case 'Table1':
+      mainContent = (
+          <div>
+            <h1 style={{color: 'white'}}>Dépense par cathegorie et par CSP</h1>
+            <Table1  />
+          </div>)
+          ;
+      break;
+    case 'Table2':
+      mainContent = (
+          <div>
+            <h1 style={{color: 'white'}}>moyenne du pannier par CSP</h1>
+            <Table2  />
+          </div>)
+          ;
+      break;
+    case 'Table3':
+      mainContent = (
+          <div>
+            <h1 style={{color: 'white'}}>Collecte</h1>
+            <Table3  />
+          </div>)
+          ;
+      break;
+    case 'Table4':
+      mainContent = (
+          <div>
+            <h1 style={{color: 'white'}}>Vue ensemble</h1>
+            <Table4  />
+          </div>)
+          ;
+      break;
+
     case 'Admin':
       mainContent = (
-        // Contenu pour le bouton "Administration"
-        <h2>Ici la gestion des utilisateurs à creer</h2>
-      );
+          <div>
+            <h1 style={{color: 'white'}}>Gestion des utilisateurs </h1>
+            <Table5  />
+          </div>)
+          ;
       break;
-  }
+    }
 
   return (
     <div>

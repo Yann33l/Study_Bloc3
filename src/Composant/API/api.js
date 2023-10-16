@@ -26,7 +26,8 @@ export const checkUser = async (Email) => {
   }
 }
 
-// !!!! a essayer de remplacer par un const requestDatas = {params : {email: Email, password: Password,}}; mais pose probleme car le serveur n'attend pas un objet. A CORRIGER +++
+// !!!! a essayer de remplacer par un const requestDatas = {params : {email: Email, password: Password,}}; mais pose probleme car le serveur n'attend pas un objet. A CORRIGER 
+// besoin d'aide +++
 export const createUser = async (Email, Password) => {
   try {/*
     const requestData = {
@@ -80,13 +81,3 @@ export const checkCredentials = async (Email, Password) => {
     throw error;
   }};
 
-  export const getDepenses_CSP_ClasseArticle = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`);
-      const responseData = response.data;
-      return responseData;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
