@@ -231,7 +231,7 @@ def depenses_CSP_ClasseArticle():
 @app.get("/moyenne_pannier_par_CSP/")
 def moyenne_pannier_par_CSP():
     try:
-        results = client_repository.get_moyenne_du_panier_par_CSP()        
+        results = client_repository.get_moyenne_du_panier_par_CSP()      
         formatted_results = []
         for row in results:
             formatted_results.append({

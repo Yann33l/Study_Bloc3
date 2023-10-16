@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { columnsTable4, dataTableStyle } from "./TableStyle";
+import { dataTableStyle, dataTableStyle2, columnsTable4 } from './TableStyle';
 import axios from 'axios'
 import {API_URL} from '../API/api'
 
@@ -32,7 +32,7 @@ const Table4 = () => {
       rows={data}
       columns={columnsTable4}
       loading={!data.length}
-      sx={dataTableStyle}
+      sx={dataTableStyle2}
       getRowId={(row) => row.id} 
       slots={{ toolbar: GridToolbar }}
     />

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import axios from 'axios';
+import React, { useEffect } from "react";
+import { API_URL } from '../API/api';
 import { columnsTable2, dataTableStyle } from "./TableStyle";
-import axios from 'axios'
-import {API_URL} from '../API/api'
 
 
 const Table2 = () => {
