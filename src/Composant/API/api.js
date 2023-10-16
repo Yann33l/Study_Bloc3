@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export let API_URL;
 
@@ -10,11 +10,43 @@ if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'lo
     API_URL = 'https://goldenline.osc-fr1.scalingo.io';
     
 }
-//Local
-//export const API_URL = 'http://127.0.0.1:8000'; 
 
-//Scalingo
-//export const API_URL = 'https://goldenline.osc-fr1.scalingo.io';
+export const checkUser = async (Email) => {
+  try {
+    const requestData = {
+      params : {
+        email: Email,
+      }
+    };
+    const response = await axios.get(`${API_URL}/userByEmail/`, requestData);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// !!!! a essayer de remplacer par un const requestDatas = {params : {email: Email, password: Password,}}; mais pose probleme car le serveur n'attend pas un objet. A CORRIGER +++
+export const createUser = async (Email, Password) => {
+  try {/*
+    const Headers = {
+      'Content-Type': 'application/json',
+    }
+    const requestData = {
+      params : {
+        email: Email,
+        password: Password,
+      }
+    };
+     const response = await axios.post(`${API_URL}/create_users/`, requestData, Headers); */
+    const response = await axios.post(`${API_URL}/create_users/?email=${Email}&password=${Password}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 
 export const checkCredentials = async (Email, Password) => {
