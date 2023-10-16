@@ -29,7 +29,7 @@ else:
         CORSMiddleware,
         allow_origins=["https://study-bloc3.vercel.app"],
         allow_credentials=True,
-        allow_methods=["GET", "POST"],
+        allow_methods=["GET", "POST", "PUT"],
         allow_headers=["*"],)
 
 def get_db():
