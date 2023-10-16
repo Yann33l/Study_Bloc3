@@ -7,10 +7,9 @@ import bcrypt
 from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.expression import text
 
 from Backend.sql_app import CRUD, client_repository, models, schemas
-from Backend.sql_app.database import SessionLocal, engine, engine_read
+from Backend.sql_app.database import SessionLocal, engine, ENV
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -18,12 +17,20 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-app.add_middleware(
+if ENV == "local":
+    app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],)
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["study-bloc3.vercel.app"],
+        allow_credentials=True,
+        allow_methods=["GET", "POST"],
+        allow_headers=["*"],)
 
 def get_db():
     db = SessionLocal()
