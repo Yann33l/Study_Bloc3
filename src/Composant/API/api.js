@@ -58,13 +58,23 @@ export const checkCredentials = async (Email, Password) => {
 
     const response = await axios.get(`${API_URL}/Connexion/`, requestData);
     const data = response.data;
-
-// Vérification de la colonne "Admin" dans la réponse de l'API pour connection page utilisateur / admin
-    if (data.Admin === 1) {
-      data.isAdmin = true;} 
+    if (data.Autorisation === true) {
+      if (data.Admin === true) {
+        data.isAdmin = true;
+        data.isAutorized = true; 
+        return data;}
+      else {
+        data.isAdmin = false;
+        data.isAutorized = true; 
+        return data;} 
+    }
     else {
-      data.isAdmin = false;}
-    return data;} 
+      data.isAuth = false;
+      return data;}
+    }
+  
+// Vérification de la colonne "Admin" dans la réponse de l'API pour connection page utilisateur / admin
+
   catch (error) {
     console.error('erreur etape 1 Une erreur s\'est produite lors de la vérification des informations d\'identification :', error);
     throw error;
