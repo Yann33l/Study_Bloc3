@@ -237,78 +237,41 @@ def moyenne_pannier_par_CSP():
 
 # Collecte
 @app.get("/Collecte/")
-def get_Collecte():
+def Collecte():
     try:
-        with engine_read.connect() as connection:
-            query = text("SELECT ROW_NUMBER() OVER (ORDER BY id_panier, libelle_categorie) AS collecte, \
-                        id_panier AS num_panier,  \
-                        prix_panier.PPA as Prix_panier,  \
-                        ROUND(SUM(quantite_article * prix_vente), 2) AS montant,  \
-                        libelle_categorie AS categorie_article  \
-                        FROM clients c  \
-                        LEFT JOIN cat_socio_pro csp ON csp.ID = c.id_CSP \
-                        LEFT JOIN paniers p ON p.id_client = c.ID \
-                        LEFT JOIN r_panier_article r_pa ON r_pa.id_panier = p.ID \
-                        LEFT JOIN articles a ON a.ID = r_pa.id_article \
-                        LEFT JOIN categories_articles ca ON ca.id = a.id_categorie_article \
-                        LEFT JOIN ( \
-                            SELECT r_pa.id_panier AS panier_id, \
-                                ROUND(SUM(quantite_article * prix_vente), 2) AS PPA \
-                            FROM paniers p \
-                            LEFT JOIN r_panier_article r_pa ON r_pa.id_panier = p.ID \
-                            LEFT JOIN articles a ON a.ID = r_pa.id_article \
-                            WHERE prix_vente IS NOT NULL \
-                            GROUP BY r_pa.id_panier) as prix_panier  \
-                            ON r_pa.id_panier = prix_panier.panier_id \
-                        WHERE prix_vente IS NOT NULL \
-                        GROUP BY libelle_CSP, libelle_categorie, ca.ID, id_panier, prix_panier.PPA \
-                        ORDER BY id_panier, libelle_categorie;") 
-            result = connection.execute(query)
-
-            results = result.fetchall()
-            formatted_results = []
-            for row in results:
-                formatted_results.append({
-                    "collecte": row[0],
-                    "num_panier": row[1],
-                    "Prix_panier": row[2],
-                    "montant": row[3],
-                    "categorie_article": row[4]
-                    })
+        results = client_repository.get_Collecte()
+        formatted_results = []
+        for row in results:
+            formatted_results.append({
+                "collecte": row[0],
+                "num_panier": row[1],
+                "Prix_panier": row[2],
+                "montant": row[3],
+                "categorie_article": row[4]
+                })
         return {"results": formatted_results}
     except Exception as e:
         return {"error": str(e)}
 
 # Vison globale    
 @app.get("/visu_ensemble/")
-def get_visu_ensemble():
+def visu_ensemble():
     try:
-        with engine_read.connect() as connection:
-            query = text("SELECT num_client, nbr_enfants, libelle_CSP, id_panier, date_achat, id_article, quantite_article, prix_vente, cout, libelle_categorie \
-                        FROM clients c \
-                        LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
-                        LEFT JOIN paniers p on p.id_client = c.ID \
-                        LEFT JOIN r_panier_article r_pa on r_pa.id_panier = p.ID \
-                        LEFT JOIN articles a on a.ID = r_pa.id_article \
-                        LEFT JOIN categories_articles ca on a.id_categorie_article = ca.ID \
-                        ;") 
-            result = connection.execute(query)
-
-            results = result.fetchall()
-            formatted_results = []
-            for row in results:
-                formatted_results.append({
-                    "Client": row[0],
-                    "Nbr enfants": row[1],
-                    "CSP": row[2],
-                    "id_panier": row[3],
-                    "date achat": row[4],
-                    "id_article": row[5],
-                    "quantite_article": row[6],
-                    "prix_vente": row[7],
-                    "cout": row[8],
-                    "categorie": row[9]
-                    })
+        results = client_repository.get_visu_ensemble()
+        formatted_results = []
+        for row in results:
+            formatted_results.append({
+                "Client": row[0],
+                "Nbr enfants": row[1],
+                "CSP": row[2],
+                "id_panier": row[3],
+                "date achat": row[4],
+                "id_article": row[5],
+                "quantite_article": row[6],
+                "prix_vente": row[7],
+                "cout": row[8],
+                "categorie": row[9]
+                })
         return {"results": formatted_results}
     except Exception as e:
         return {"error": str(e)}
