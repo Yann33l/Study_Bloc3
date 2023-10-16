@@ -1,17 +1,25 @@
-from pydantic import BaseModel 
 from datetime import date
 
+from pydantic import BaseModel
+
+
 #table users
+class UserForm(BaseModel):
+    Email: str
+    Password: str
+
 class UserBase(BaseModel):
     Email: str
     First_connexion: date | None = None
     Last_change_password: date | None = None
-    Admin: int
+    Admin: bool
+    Autorisation: bool
         
     class Config:
         orm_mode = True
 class UserCreate(UserBase):
     Password: bytes
+
 
 # table clients
 class Clients(BaseModel):

@@ -1,15 +1,15 @@
 " Main file of the API."
-from datetime import datetime
-import json
 import csv
+import json
+from datetime import datetime
+
 import bcrypt
-from fastapi import Depends, FastAPI, HTTPException, UploadFile, File
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.expression import text
-from Backend.sql_app import CRUD, models, schemas
-from Backend.sql_app.database import SessionLocal, engine, engine_read
 
+from Backend.sql_app import CRUD, client_repository, models, schemas
+from Backend.sql_app.database import SessionLocal, engine, ENV
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -17,12 +17,20 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-app.add_middleware(
+if ENV == "local":
+    app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],)
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["study-bloc3.vercel.app"],
+        allow_credentials=True,
+        allow_methods=["GET", "POST"],
+        allow_headers=["*"],)
 
 def get_db():
     db = SessionLocal()
@@ -34,6 +42,7 @@ def get_db():
 
 #region : Connexion visualisation et création d'un utilisateur
 
+# Connexion d'un utilisateur
 @app.get("/Connexion/", response_model=schemas.UserBase)
 def Connexion(email: str, password: str, db: Session = Depends(get_db)):
     user = CRUD.get_user_by_email(db, email)
@@ -43,32 +52,50 @@ def Connexion(email: str, password: str, db: Session = Depends(get_db)):
         if bcrypt.checkpw(password.encode('utf-8'), bytes(user.Password)):
             return schemas.UserBase(
                 Email=user.Email,
-                Admin=user.Admin
+                Admin=user.Admin,
+                Autorisation=user.Autorisation,
             )
-        else: 
+        else:
             raise HTTPException(status_code=404, detail="Mot de passe incorrect")
 
-
+# Creation d'un utilisateur
 @app.post("/create_users/", response_model=schemas.UserCreate)
-def user(user: schemas.UserCreate,  db: Session = Depends(get_db)):
-        user_exists = CRUD.get_user_by_email(db, email=user.Email)
-        if user_exists:
-           raise HTTPException(status_code=400, detail="Email already registered")
-        else:       
-            salt = bcrypt.gensalt(12)
-            user.Password = bcrypt.hashpw(user.Password, salt)                       
-            return CRUD.create_user(db, user)
+def create_users(email: str, password: str, db: Session = Depends(get_db)):
+    user_exists = CRUD.get_user_by_email(db, email)
+    if user_exists:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    else:
+        salt = bcrypt.gensalt(12)
+        password_byte = password.encode('utf-8')
+        user = schemas.UserCreate(
+            Email = email,
+            Password = bcrypt.hashpw(password_byte, salt),
+            Autorisation = False,
+            Admin = False,
+            First_connexion = None,
+            Last_change_password = datetime.now().date())
+        return CRUD.create_user(db, user)
 
 
+# Récupération de la liste des utilisateurs
 @app.get("/users/", response_model=list[schemas.UserBase])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = CRUD.get_users(db, skip=skip, limit=limit)
     return users
 
 
+# Récupération d'un utilisateur par son ID
 @app.get("/users/{user_id}", response_model=schemas.UserBase)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = CRUD.get_user_by_ID(db, id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
+# Récupération d'un utilisateur par son email
+@app.get("/userByEmail/", response_model=schemas.UserBase)
+def read_user_email(email: str, db: Session = Depends(get_db)):
+    db_user = CRUD.get_user_by_email(db, email)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
@@ -186,134 +213,72 @@ def upload_r_panier_articles(file: UploadFile = File(...), db: Session = Depends
 #region : Récupération des données pour la visualisation 
 # Dépenses par CSP et catégorie article
 @app.get("/depenses_CSP_ClasseArticle/")
-def get_depenses_CSP_ClasseArticle():
+def depenses_CSP_ClasseArticle():
     try:
-        with engine_read.connect() as connection:
-            query = text("SELECT libelle_CSP as CSP, round(sum(quantite_article*prix_vente), 2) as depenses, libelle_categorie as categorie_vetement \
-                            FROM clients c \
-                            LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
-                            LEFT JOIN paniers p on p.id_client = c.ID \
-                            LEFT JOIN r_panier_article r_pa on r_pa.id_panier = p.ID \
-                            LEFT JOIN articles a on a.ID = r_pa.id_article \
-                            LEFT JOIN categories_articles ca on a.id_categorie_article = ca.ID \
-                            WHERE libelle_categorie IS NOT NULL \
-                            GROUP BY libelle_CSP, libelle_categorie \
-                            ORDER BY 1, 3;")
-            result = connection.execute(query)
-
-            results = result.fetchall()
-            formatted_results = []
-            for row in results:
-                formatted_results.append({
-                    "CSP": row[0],
-                    "depenses": row[1],
-                    "categorie_vetement": row[2]
-                })
+        results = client_repository.get_depenses_CSP_ClasseArticle()
+        formatted_results = []
+        for row in results:
+            formatted_results.append({
+                "CSP": row[0],
+                "depenses": row[1],
+                "categorie_vetement": row[2]
+            })
         return {"results": formatted_results}
     except Exception as e:
         return {"error": str(e)}
 
 # Dépenses moyenne par pannier par CSP
 @app.get("/moyenne_pannier_par_CSP/")
-def get_moyenne_pannier_par_CSP():
+def moyenne_pannier_par_CSP():
     try:
-        with engine_read.connect() as connection:
-            query = text("SELECT libelle_CSP as CSP, round(sum(quantite_article*prix_vente)/count(distinct id_panier),2) as Moy_panier \
-                        FROM clients c \
-                        LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
-                        left join paniers p on p.id_client = c.ID \
-                        left join r_panier_article r_pa on r_pa.id_panier = p.ID \
-                        left join articles a on a.ID = r_pa.id_article \
-                        where prix_vente is not null \
-                        group by libelle_CSP \
-                        ;")
-            result = connection.execute(query)
-
-            results = result.fetchall()
-            formatted_results = []
-            for row in results:
-                formatted_results.append({
-                    "CSP": row[0],
-                    "Moy_panier": row[1]
-                })
+        results = client_repository.get_moyenne_du_panier_par_CSP()        
+        formatted_results = []
+        for row in results:
+            formatted_results.append({
+                "CSP": row[0],
+                "Moy_panier": row[1]
+            })
         return {"results": formatted_results}
     except Exception as e:
         return {"error": str(e)}
 
 # Collecte
 @app.get("/Collecte/")
-def get_Collecte():
+def Collecte():
     try:
-        with engine_read.connect() as connection:
-            query = text("SELECT ROW_NUMBER() OVER (ORDER BY id_panier, libelle_categorie) AS collecte, \
-                        id_panier AS num_panier,  \
-                        prix_panier.PPA as Prix_panier,  \
-                        ROUND(SUM(quantite_article * prix_vente), 2) AS montant,  \
-                        libelle_categorie AS categorie_article  \
-                        FROM clients c  \
-                        LEFT JOIN cat_socio_pro csp ON csp.ID = c.id_CSP \
-                        LEFT JOIN paniers p ON p.id_client = c.ID \
-                        LEFT JOIN r_panier_article r_pa ON r_pa.id_panier = p.ID \
-                        LEFT JOIN articles a ON a.ID = r_pa.id_article \
-                        LEFT JOIN categories_articles ca ON ca.id = a.id_categorie_article \
-                        LEFT JOIN ( \
-                            SELECT r_pa.id_panier AS panier_id, \
-                                ROUND(SUM(quantite_article * prix_vente), 2) AS PPA \
-                            FROM paniers p \
-                            LEFT JOIN r_panier_article r_pa ON r_pa.id_panier = p.ID \
-                            LEFT JOIN articles a ON a.ID = r_pa.id_article \
-                            WHERE prix_vente IS NOT NULL \
-                            GROUP BY r_pa.id_panier) as prix_panier  \
-                            ON r_pa.id_panier = prix_panier.panier_id \
-                        WHERE prix_vente IS NOT NULL \
-                        GROUP BY libelle_CSP, libelle_categorie, ca.ID, id_panier, prix_panier.PPA \
-                        ORDER BY id_panier, libelle_categorie;") 
-            result = connection.execute(query)
-
-            results = result.fetchall()
-            formatted_results = []
-            for row in results:
-                formatted_results.append({
-                    "collecte": row[0],
-                    "num_panier": row[1],
-                    "Prix_panier": row[2],
-                    "montant": row[3],
-                    "categorie_article": row[4]
-                    })
+        results = client_repository.get_Collecte()
+        formatted_results = []
+        for row in results:
+            formatted_results.append({
+                "collecte": row[0],
+                "num_panier": row[1],
+                "Prix_panier": row[2],
+                "montant": row[3],
+                "categorie_article": row[4]
+                })
         return {"results": formatted_results}
     except Exception as e:
         return {"error": str(e)}
 
 # Vison globale    
 @app.get("/visu_ensemble/")
-def get_visu_ensemble():
+def visu_ensemble():
     try:
-        with engine_read.connect() as connection:
-            query = text("SELECT num_client, nbr_enfants, libelle_CSP, id_panier, date_achat, id_article, quantite_article, prix_vente, cout, libelle_categorie \
-                        FROM clients c \
-                        LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
-                        LEFT JOIN paniers p on p.id_client = c.ID \
-                        LEFT JOIN r_panier_article r_pa on r_pa.id_panier = p.ID \
-                        LEFT JOIN articles a on a.ID = r_pa.id_article \
-                        LEFT JOIN categories_articles ca on a.id_categorie_article = ca.ID \
-                        ;") 
-            result = connection.execute(query)
-
-            results = result.fetchall()
-            formatted_results = []
-            for row in results:
-                formatted_results.append({
-                    "Client": row[0],
-                    "Nbr enfants": row[1],
-                    "CSP": row[2],
-                    "id_panier": row[3],
-                    "date achat": row[4],
-                    "id_article": row[5],
-                    "quantite_article": row[6],
-                    "prix_vente": row[7],
-                    "cout": row[8],
-                    "categorie": row[9]
-                    })
+        results = client_repository.get_visu_ensemble()
+        formatted_results = []
+        for row in results:
+            formatted_results.append({
+                "Client": row[0],
+                "Nbr enfants": row[1],
+                "CSP": row[2],
+                "id_panier": row[3],
+                "date achat": row[4],
+                "id_article": row[5],
+                "quantite_article": row[6],
+                "prix_vente": row[7],
+                "cout": row[8],
+                "categorie": row[9]
+                })
         return {"results": formatted_results}
     except Exception as e:
         return {"error": str(e)}

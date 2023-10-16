@@ -12,6 +12,7 @@ class users(Base):
     Last_change_password = Column(DATE)
     Admin = Column(Boolean)
     Password = Column(LargeBinary)
+    Autorisation = Column(Boolean)
 
 
 class clients(Base):
