@@ -19,11 +19,25 @@ body .Connexion p {font-family: none;
    color:black}
 
 body .Connexion input {
-  width: 50%
+  width: 50%; border-radius: 5px
 }
 
 body .Connexion button {
-  border: 1px solid; margin: 5px 0;width: 40%
+  border: 1px solid;
+  border-color: rgb(54, 54, 54);
+  margin: 5px 0;
+  width: 30%; 
+  border-radius: 7px
+}
+
+body .Connexion button:hover {
+  border: 1px solid;
+  border-radius: 7px; 
+  margin: 5px 0;
+  width: 30%;
+  background-color: rgb(126, 125, 125);
+  border-left-color: rgb(126, 125, 125);
+  border-bottom-color: rgb(126, 125, 125);
 }
 
 body main form{
