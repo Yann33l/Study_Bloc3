@@ -26,10 +26,21 @@ function HomePage({ isAdmin }) {
     case 'acceuil':
     case 'default':
       mainContent = (
-        <div>
-          <h1>Ici sera le contenu de la page d'acceuil</h1>
-          <h1>Ici sera le graphe 1</h1>
-          <h2>Ici le tableau du graphe 1</h2>
+        <div style={{marginLeft: 30, color: 'white'}}>
+          <h1>Présentation de l'application</h1>
+          <p>
+            Cette application permet de visualiser les données de le ventes de l'entreprise Goldenline pour permetre l'étude des comportements des clients.
+          </p>
+          <p>
+            Nous sommes constamment engagés dans l'amélioration de notre application. Voici les prochaines fonctionnalités que nous prévoyons de mettre en place :
+            <ul>
+              <li>Remplacement du système de login actuel par un système de token : Cette mise à jour améliorera la sécurité et la convivialité de l'application en remplaçant le processus de connexion traditionnel par un système basé sur des jetons d'authentification.</li>
+              <li>Ajout d'une sélection multiple des lignes pour exporter les tableaux : Cette fonctionnalité permettra aux utilisateurs de sélectionner plusieurs lignes de données à la fois, simplifiant ainsi le processus d'exportation de tableaux pour des analyses ultérieures.</li>
+            </ul>
+          </p>
+          <h2>Mon projet professionel</h2>
+          <p>   Mon ambition professionnelle est de poursuivre mon apprentissage du développement web par le biais d'un contrat d'alternance, de préférence dans le domaine de la santé. Travailler dans le secteur de la santé est particulièrement important pour moi, car cela me permettrait de combiner ma passion pour le développement web avec mon rôle actuel au sein de mon lieu de travail. Je suis déterminé à continuer à acquérir des compétences et à contribuer de manière significative au secteur de la santé en utilisant la technologie de manière innovante.
+          </p>
         </div>
       );
       break;
