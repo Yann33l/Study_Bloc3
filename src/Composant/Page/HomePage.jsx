@@ -39,8 +39,7 @@ function HomePage({ isAdmin }) {
             </ul>
           </p>
           <h2>Mon projet professionel</h2>
-          <p>   Mon ambition professionnelle est de poursuivre mon apprentissage du développement web par le biais d'un contrat d'alternance, de préférence dans le domaine de la santé. Travailler dans le secteur de la santé est particulièrement important pour moi, car cela me permettrait de combiner ma passion pour le développement web avec mon rôle actuel au sein de mon lieu de travail. Je suis déterminé à continuer à acquérir des compétences et à contribuer de manière significative au secteur de la santé en utilisant la technologie de manière innovante.
-          </p>
+          <p>Mon ambition professionnelle est de poursuivre mon apprentissage du développement web par le biais d'un contrat d'alternance, de préférence dans le domaine de la santé. Travailler dans le secteur de la santé est particulièrement important pour moi, car cela me permettrait de combiner ma passion pour le développement web et l’analyse de données dans un domaine d’utilité public générant toujours plus de données à analyser. Je suis déterminé à continuer à acquérir des compétences et à contribuer de manière significative au secteur de la santé.          </p>
         </div>
       );
       break;
