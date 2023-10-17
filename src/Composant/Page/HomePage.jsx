@@ -29,12 +29,12 @@ function HomePage({ isAdmin }) {
         <div style={{marginLeft: 30, color: 'white'}}>
           <h1>Présentation de l'application</h1>
           <p>
-            Cette application permet de visualiser les données de le ventes de l'entreprise Goldenline pour permetre l'étude des comportements des clients.
+            Cette application permet de visualiser les données de ventes de l'entreprise Goldenline pour permetre l'étude des comportements des clients.
           </p>
           <p>
             Nous sommes constamment engagés dans l'amélioration de notre application. Voici les prochaines fonctionnalités que nous prévoyons de mettre en place :
             <ul>
-              <li>Remplacement du système de login actuel par un système de token : Cette mise à jour améliorera la sécurité et la convivialité de l'application en remplaçant le processus de connexion traditionnel par un système basé sur des jetons d'authentification.</li>
+              <li>Remplacement du système de login actuel par un système de token : Cette mise à jour améliorera la sécurité de l'application en remplaçant le processus de connexion traditionnel par un système basé sur des jetons d'authentification.</li>
               <li>Ajout d'une sélection multiple des lignes pour exporter les tableaux : Cette fonctionnalité permettra aux utilisateurs de sélectionner plusieurs lignes de données à la fois, simplifiant ainsi le processus d'exportation de tableaux pour des analyses ultérieures.</li>
             </ul>
           </p>
