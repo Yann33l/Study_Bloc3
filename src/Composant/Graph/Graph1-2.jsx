@@ -97,7 +97,7 @@ const Graph1_2 = () => {
 
                         return {
                             label: csp,
-                            backgroundColor: generateRandomColors(uniqueCSPValues.length),
+                            backgroundColor: generateRandomColors(1),
                             data: dataValues,
                         };
                     });

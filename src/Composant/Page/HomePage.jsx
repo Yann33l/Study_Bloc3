@@ -33,11 +33,11 @@ function HomePage({ isAdmin }) {
           </p>
           <p>
             Nous sommes constamment engagés dans l'amélioration de notre application. Voici les prochaines fonctionnalités que nous prévoyons de mettre en place :
-            <ul>
+          </p>
+          <ul>
               <li>Remplacement du système de login actuel par un système de token : Cette mise à jour améliorera la sécurité de l'application en remplaçant le processus de connexion traditionnel par un système basé sur des jetons d'authentification.</li>
               <li>Ajout d'une sélection multiple des lignes pour exporter les tableaux : Cette fonctionnalité permettra aux utilisateurs de sélectionner plusieurs lignes de données à la fois, simplifiant ainsi le processus d'exportation de tableaux pour des analyses ultérieures.</li>
             </ul>
-          </p>
           <h2>Mon projet professionel</h2>
           <p>Mon ambition professionnelle est de poursuivre mon apprentissage du développement web par le biais d'un contrat d'alternance, de préférence dans le domaine de la santé. Travailler dans le secteur de la santé est particulièrement important pour moi, car cela me permettrait de combiner ma passion pour le développement web et l’analyse de données dans un domaine d’utilité public générant toujours plus de données à analyser. Je suis déterminé à continuer à acquérir des compétences et à contribuer de manière significative au secteur de la santé.          </p>
         </div>

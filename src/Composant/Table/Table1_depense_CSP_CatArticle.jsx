@@ -51,6 +51,7 @@ const Table1 = () => {
       sx={dataTableStyle}
       getRowId={(row) => row.id} 
       slots={{ toolbar: GridToolbar }}
+      checkboxSelection
     />
   );
 };

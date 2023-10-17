@@ -85,10 +85,10 @@ function App() {
         <br />
         <form onSubmit={handleLogin}>
           <label htmlFor="Email">Email<br /></label>
-          <input name="Email" type="email" placeholder="Email" />
+          <input id="Email" name="Email" type="email" placeholder="Email" autoComplete='email'/>
           <br /><br />
           <label htmlFor="Password">Password<br /></label>
-          <input name="Password" type="password" placeholder="Mot de passe" />
+          <input id="Password" name="Password" type="password" placeholder="Mot de passe" autoComplete="off"/>
           <br /><br />
           <button type="submit, reset"> Connexion </button>
         </form>
