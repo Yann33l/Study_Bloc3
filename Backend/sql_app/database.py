@@ -4,7 +4,7 @@ import socket
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 load_dotenv()
 
@@ -30,15 +30,17 @@ SCALINGO_MYSQL_URL = f"mysql://{Login}:{Password}@{Server_Host}:{Port}/{Database
 
 # Local
 SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:Study_projet3@localhost:3310/goldenline"
-SQLALCHEMY_DATABASE_URL_READ = "mysql+mysqlconnector://read:read@localhost:3310/goldenline"
+
+# Local_test
+SQLALCHEMY_DATABASE_URL_TEST = "mysql+mysqlconnector://root:Study_projet3@localhost:3310/goldenline_test"
 
 
 if ENV == "local":
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
-    engine_read = create_engine(SQLALCHEMY_DATABASE_URL_READ)
+elif ENV == "local_test":
+    engine = create_engine(SQLALCHEMY_DATABASE_URL_TEST)
 else:
     engine = create_engine(SCALINGO_MYSQL_URL)
-    engine_read = create_engine(SCALINGO_MYSQL_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -1,10 +1,10 @@
 from sqlalchemy.sql.expression import text
 
-from Backend.sql_app.database import engine_read
+from Backend.sql_app.database import engine
 
 
 def get_depenses_CSP_ClasseArticle():
-    with engine_read.connect() as connection:
+    with engine.connect() as connection:
         query = text("SELECT libelle_CSP as CSP, round(sum(quantite_article*prix_vente), 2) as depenses, libelle_categorie as categorie_vetement \
                         FROM clients c \
                         LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
@@ -19,7 +19,7 @@ def get_depenses_CSP_ClasseArticle():
         return result.fetchall()
 
 def get_moyenne_du_panier_par_CSP():
-    with engine_read.connect() as connection:
+    with engine.connect() as connection:
         query = text("SELECT libelle_CSP as CSP, round(sum(quantite_article*prix_vente)/count(distinct id_panier),2) as Moy_panier \
                     FROM clients c \
                     LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \
@@ -33,7 +33,7 @@ def get_moyenne_du_panier_par_CSP():
         return result.fetchall()
     
 def get_Collecte():
-    with engine_read.connect() as connection:
+    with engine.connect() as connection:
         query = text("SELECT ROW_NUMBER() OVER (ORDER BY id_panier, libelle_categorie) AS collecte, \
                     id_panier AS num_panier,  \
                     prix_panier.PPA as Prix_panier,  \
@@ -62,7 +62,7 @@ def get_Collecte():
          
 
 def get_visu_ensemble():
-    with engine_read.connect() as connection:
+    with engine.connect() as connection:
         query = text("SELECT num_client, nbr_enfants, libelle_CSP, id_panier, date_achat, id_article, quantite_article, prix_vente, cout, libelle_categorie \
                     FROM clients c \
                     LEFT JOIN cat_socio_pro csp on csp.ID = c.id_CSP \

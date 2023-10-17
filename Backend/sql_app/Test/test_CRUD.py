@@ -1,9 +1,8 @@
 from datetime import date
 from unittest.mock import Mock
-import pytest
 
-from sql_app import schemas, models
 import sql_app.CRUD as CRUD
+from sql_app import schemas
 
 db = Mock()
 user = schemas.UserCreate(
