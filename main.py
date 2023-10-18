@@ -43,7 +43,8 @@ def get_db():
 #region : Connexion visualisation et création d'un utilisateur
 
 # Connexion d'un utilisateur
-@app.get("/Connexion/", response_model=schemas.UserBase)
+" passage de la connexion par get à post"
+""" @app.get("/Connexion/", response_model=schemas.UserBase)
 def Connexion(email: str, password: str, db: Session = Depends(get_db)):
     user = CRUD.get_user_by_email(db, email)
     if user is None:
@@ -56,23 +57,24 @@ def Connexion(email: str, password: str, db: Session = Depends(get_db)):
                 Autorisation=user.Autorisation,
             )
         else:
-            raise HTTPException(status_code=404, detail="Mot de passe incorrect")
+            raise HTTPException(status_code=404, detail="Mot de passe incorrect") """
 
-# Connexion d'un utilisateur par post en cours de changement
+# Connexion d'un utilisateur par post
 @app.post("/Connexion2/", response_model=schemas.UserBase)
-def Connexion2(email: str, password: str, db: Session = Depends(get_db)):
-    user = CRUD.get_user_by_email(db, email)
+def Connexion2(user: schemas.UserForm, db: Session = Depends(get_db)):
+    db_user = CRUD.get_user_by_email(db, user.Email)
     if user is None:
         raise HTTPException(status_code=404, detail="Email incorrect")
     else:
-        if bcrypt.checkpw(password.encode('utf-8'), bytes(user.Password)):
+        if bcrypt.checkpw(user.Password.encode('utf-8'), bytes(db_user.Password)):
             return schemas.UserBase(
-                Email=user.Email,
-                Admin=user.Admin,
-                Autorisation=user.Autorisation,
+                Email=db_user.Email,
+                Admin=db_user.Admin,
+                Autorisation=db_user.Autorisation,
             )
         else:
             raise HTTPException(status_code=404, detail="Mot de passe incorrect")
+        
 # Creation d'un utilisateur
 """ @app.post("/create_users1/", response_model=schemas.UserCreate)
 def create_users1(email: str, password: str, db: Session = Depends(get_db)):

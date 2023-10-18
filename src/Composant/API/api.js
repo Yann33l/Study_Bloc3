@@ -61,13 +61,19 @@ export const checkCredentials = async (Email, Password) => {
 
   //Connexion à l'application
   try { 
-    const requestData = {
+/*     const requestData = {
       params : {
         email: Email,
         password: Password,
       }};
 
-    const response = await axios.get(`${API_URL}/Connexion/`, requestData);
+    const response = await axios.get(`${API_URL}/Connexion/`, requestData); */
+    const requestData =  {
+        Email: Email,
+        Password: Password,
+      };
+
+    const response = await axios.post(`${API_URL}/Connexion2/`, requestData);
     const data = response.data;
     if (data.Autorisation === true) {
       if (data.Admin === true) {
