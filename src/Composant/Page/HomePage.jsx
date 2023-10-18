@@ -7,6 +7,7 @@ import Table5 from '../Table/Table5_utilisateurs';
 import Graph1 from '../Graph/Graph1';
 import Graph1_2 from '../Graph/Graph1-2';
 import Graph2 from '../Graph/Graph2';
+import { yellow } from '@mui/material/colors';
  
 
 
@@ -28,6 +29,9 @@ function HomePage({ isAdmin }) {
       mainContent = (
         <div style={{marginLeft: 30, color: 'white'}}>
           <h1>Présentation de l'application</h1>
+          <h3>Lien vers le code source de l'application</h3>
+          <a style={{color: '#D4AF37'}} href="https://github.com/Yann33l/Study_Bloc3" target="_blank" rel="bookmark">https://github.com/Yann33l/Study_Bloc3</a>
+          <br /><br />
           <p>
             Cette application permet de visualiser les données de ventes de l'entreprise Goldenline pour permetre l'étude des comportements des clients.
           </p>
