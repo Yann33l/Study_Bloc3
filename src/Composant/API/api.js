@@ -8,8 +8,8 @@ if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'lo
 } else {
     // Environnement en ligne
     API_URL = 'https://goldenline.osc-fr1.scalingo.io';
-    
 }
+
 
 export const checkUser = async (Email) => {
   try {
@@ -26,22 +26,10 @@ export const checkUser = async (Email) => {
   }
 }
 
-// !!!! a essayer de remplacer par un const requestDatas = {params : {email: Email, password: Password,}}; mais pose probleme car le serveur n'attend pas un objet. A CORRIGER 
-// besoin d'aide +++
-/* export const createUser = async (Email, Password) => {
-  try { 
-    const response = await axios.post(`${API_URL}/create_users1/?email=${Email}&password=${Password}`);
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-} */
 
 export const createUser = async (Email, Password) => {
   try {
-    const response = await axios.post(`${API_URL}/create_users/`,{
+    const response = await axios.post(`${API_URL}/create_user/`,{
       Email: Email,
       Password: Password,
       First_connexion: null,
@@ -57,24 +45,17 @@ export const createUser = async (Email, Password) => {
   }
 }
 
+
 export const checkCredentials = async (Email, Password) => {
-
-  //Connexion à l'application
   try { 
-/*     const requestData = {
-      params : {
-        email: Email,
-        password: Password,
-      }};
-
-    const response = await axios.get(`${API_URL}/Connexion/`, requestData); */
     const requestData =  {
         Email: Email,
         Password: Password,
       };
 
-    const response = await axios.post(`${API_URL}/Connexion2/`, requestData);
+    const response = await axios.post(`${API_URL}/Connexion/`, requestData);
     const data = response.data;
+    //Rendre plus propre && ajout par token de la vérification
     if (data.Autorisation === true) {
       if (data.Admin === true) {
         data.isAdmin = true;
@@ -89,11 +70,8 @@ export const checkCredentials = async (Email, Password) => {
       data.isAuth = false;
       return data;}
     }
-  
-// Vérification de la colonne "Admin" dans la réponse de l'API pour connection page utilisateur / admin
-
-  catch (error) {
-    console.error('erreur etape 1 Une erreur s\'est produite lors de la vérification des informations d\'identification :', error);
+    catch (error) {
+    console.error(error);
     throw error;
   }};
 

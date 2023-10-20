@@ -43,24 +43,7 @@ def get_db():
 #region : Connexion visualisation et création d'un utilisateur
 
 # Connexion d'un utilisateur
-" passage de la connexion par get à post"
-""" @app.get("/Connexion/", response_model=schemas.UserBase)
-def Connexion(email: str, password: str, db: Session = Depends(get_db)):
-    user = CRUD.get_user_by_email(db, email)
-    if user is None:
-        raise HTTPException(status_code=404, detail="Email incorrect")
-    else:
-        if bcrypt.checkpw(password.encode('utf-8'), bytes(user.Password)):
-            return schemas.UserBase(
-                Email=user.Email,
-                Admin=user.Admin,
-                Autorisation=user.Autorisation,
-            )
-        else:
-            raise HTTPException(status_code=404, detail="Mot de passe incorrect") """
-
-# Connexion d'un utilisateur par post
-@app.post("/Connexion2/", response_model=schemas.UserBase)
+@app.post("/Connexion/", response_model=schemas.UserBase)
 def Connexion2(user: schemas.UserForm, db: Session = Depends(get_db)):
     db_user = CRUD.get_user_by_email(db, user.Email)
     if user is None:
@@ -76,24 +59,7 @@ def Connexion2(user: schemas.UserForm, db: Session = Depends(get_db)):
             raise HTTPException(status_code=404, detail="Mot de passe incorrect")
         
 # Creation d'un utilisateur
-""" @app.post("/create_users1/", response_model=schemas.UserCreate)
-def create_users1(email: str, password: str, db: Session = Depends(get_db)):
-    user_exists = CRUD.get_user_by_email(db, email)
-    if user_exists:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    else:
-        salt = bcrypt.gensalt(12)
-        password_byte = password.encode('utf-8')
-        user = schemas.UserCreate(
-            Email = email,
-            Password = bcrypt.hashpw(password_byte, salt),
-            Autorisation = False,
-            Admin = False,
-            First_connexion = None,
-            Last_change_password = datetime.now().date())
-        return CRUD.create_user(db, user) """
-
-@app.post("/create_users/", response_model=schemas.UserCreate)
+@app.post("/create_user/", response_model=schemas.UserCreate)
 def create_users(user:schemas.UserCreate, db: Session = Depends(get_db)):
     user_exists = CRUD.get_user_by_email(db, user.Email)
     if user_exists:

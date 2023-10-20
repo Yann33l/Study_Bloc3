@@ -35,7 +35,7 @@ const handleCheckBoxChange = async (event, params) => {
     });
 
   // Envoyer la mise à jour à la base de données via une requête HTTP
-  // Voir si possible de passer par un objet
+//voir pour passer avec requestData
     if (params.field === "Admin") {
         try {
             await axios.put(`${API_URL}/editUserAdmin/?email=${params.row.Email}&admin=${newValue}`);
@@ -65,7 +65,7 @@ const handleCheckBoxChange = async (event, params) => {
     );
   };
 
-  // Modifiez les colonnes "Admin" et "Autorisation" pour utiliser la fonction de rendu personnalisée "renderCheckCell"
+  // modification des colonnes Admin et Autorisation pour afficher les checkbox
   const columns = columnsTable5.map((column) => {
     if (column.field === "Admin" || column.field === "Autorisation") {
       return {
@@ -76,6 +76,7 @@ const handleCheckBoxChange = async (event, params) => {
     return column;
   });
 
+  // Affichage du tableau
   return (
     <DataGrid
       rows={data}

@@ -1,4 +1,6 @@
 import React, { useState, useEffect} from 'react';
+
+// trop d'import ajouter un index table et graph
 import Table1 from '../Table/Table1_depense_CSP_CatArticle';
 import Table2 from '../Table/Table2_moyenne_pannier_par_CSP';
 import Table3 from '../Table/Table3_Collecte';
@@ -13,15 +15,13 @@ import { yellow } from '@mui/material/colors';
 
 
 function HomePage({ isAdmin }) {
-  const [content, setContent] = useState('default'); // État pour suivre le contenu
+  const [content, setContent] = useState('default'); 
 
   // Fonctions pour gérer les clics des boutons et mettre à jour le contenu
   const handleButtonClick = (newContent) => {
     setContent(newContent);
   };
-
-
-  // Contenu du main basé sur l'état
+    // Contenu du main basé sur l'état
   let mainContent;
   switch (content) {
     case 'acceuil':
@@ -102,7 +102,6 @@ function HomePage({ isAdmin }) {
         </div>
       );
       break;
-    
     case 'Table1':
       mainContent = (
           <div>
@@ -154,8 +153,7 @@ function HomePage({ isAdmin }) {
             id="logo"
             alt="logo"
             src="/Image/logo/png/logo-no-background2.png"
-/*             src="/public/Image/logo/png/logo-no-background.png"
- */            height="120"
+            height="120"
           />
         </div>
         <nav className="menu-nav">
