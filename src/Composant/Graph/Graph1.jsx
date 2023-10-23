@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { API_URL } from '../API/api';
 import { generateRandomColors } from './Graph_style';
+import { getAuthHeader } from "../API/token";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -45,7 +46,7 @@ const Graph1 = () => {
             },
         ],
     });
-
+    const authHeader = getAuthHeader()
 
         // Fonction pour regrouper les dépenses par CSP identique
         const groupByCSP = (data) => {
@@ -62,7 +63,7 @@ const Graph1 = () => {
         // Fonction pour récupérer les dépenses par CSP
         const getDepenses_CSP_ClasseArticle = async () => {
             try {
-                const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`);
+                const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`, authHeader);
                 const responseData = response.data;
 
                 if (responseData.results) {

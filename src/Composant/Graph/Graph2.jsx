@@ -12,6 +12,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import { getAuthHeader } from "../API/token";
 
 ChartJS.register(
     CategoryScale,
@@ -83,11 +84,13 @@ const Graph2 = () => {
             backgroundColor: [],
         }],
     });
+    const authHeader = getAuthHeader()
+
 
     useEffect(() => {
         const getMoyennePannierParCSP = async () => {
             try {
-                const response = await axios.get(`${API_URL}/moyenne_pannier_par_CSP/`);
+                const response = await axios.get(`${API_URL}/moyenne_pannier_par_CSP/`, authHeader);
                 const responseData = response.data;
 
                 if (responseData.results) {

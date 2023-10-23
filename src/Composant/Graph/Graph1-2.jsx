@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_URL } from '../API/api';
 import { Bar } from 'react-chartjs-2';
 import { generateRandomColors } from './Graph_style';
+import { getAuthHeader } from "../API/token";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,6 +13,7 @@ import {
     Tooltip,
     Legend,
   } from 'chart.js';
+  
 
 ChartJS.register(
     CategoryScale,
@@ -78,11 +80,12 @@ const Graph1_2 = () => {
         labels: [],
         datasets: [],
     });
+    const authHeader = getAuthHeader()
 
     useEffect(() => {
         const getDepenses_CSP_ClasseArticle = async () => {
             try {
-                const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`);
+                const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`, authHeader);
                 const responseData = response.data;
 
                 if (responseData.results) {

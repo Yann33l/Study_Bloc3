@@ -9,7 +9,6 @@ import Table5 from '../Table/Table5_utilisateurs';
 import Graph1 from '../Graph/Graph1';
 import Graph1_2 from '../Graph/Graph1-2';
 import Graph2 from '../Graph/Graph2';
-import { yellow } from '@mui/material/colors';
  
 
 

@@ -7,12 +7,13 @@ import { columnsTable2, dataTableStyle } from "./TableStyle";
 
 const Table2 = () => {
     const [data, setData] = React.useState([]);
-  
+    const authHeader = getAuthHeader()
+
 
     useEffect(() => {
       const getmoyenne_pannier_par_CSP = async () => {
         try {
-          const response = await axios.get(`${API_URL}/moyenne_pannier_par_CSP/`);
+          const response = await axios.get(`${API_URL}/moyenne_pannier_par_CSP/`, authHeader);
           const responseData = response.data;
           setData(responseData)
           const dataWithIds = responseData.results.map((row, index) => ({

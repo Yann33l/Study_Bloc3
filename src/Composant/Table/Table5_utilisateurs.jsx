@@ -3,14 +3,16 @@ import axios from 'axios';
 import React, { useEffect } from "react";
 import { API_URL } from '../API/api';
 import { columnsTable5, dataTableStyle } from './TableStyle';
+import { getAuthHeader } from "../API/token";
 
 const Table5 = () => {
   const [data, setData] = React.useState([]);
+  const authHeader = getAuthHeader()
 
   useEffect(() => {
     const getCollecte = async () => {
       try {
-        const response = await axios.get(`${API_URL}/users/`);
+        const response = await axios.get(`${API_URL}/users/`, authHeader);
         const responseData = response.data;
         setData(responseData);
       } catch (error) {
@@ -33,12 +35,18 @@ const handleCheckBoxChange = async (event, params) => {
             };
         } return row;
     });
+    const authHeader = getAuthHeader()
+
 
   // Envoyer la mise à jour à la base de données via une requête HTTP
 //voir pour passer avec requestData
     if (params.field === "Admin") {
         try {
-            await axios.put(`${API_URL}/editUserAdmin/?email=${params.row.Email}&admin=${newValue}`);
+          const requestData = {
+            Email: params.row.Email,
+            Admin: newValue,
+          };
+            await axios.put(`${API_URL}/editUserAdmin/`,requestData , authHeader);
             setData(updatedData);
         } catch (error) {
             console.error("Erreur lors de la mise à jour : ", error);
@@ -46,7 +54,11 @@ const handleCheckBoxChange = async (event, params) => {
         }
     if (params.field === "Autorisation") {
         try {
-            await axios.put(`${API_URL}/editUserAutorisation/?email=${params.row.Email}&autorisation=${newValue}`);
+          const requestData = {
+            Email: params.row.Email,
+            Autorisation: newValue,
+          };
+            await axios.put(`${API_URL}/editUserAutorisation/`,requestData ,authHeader);
             setData(updatedData);
         } catch (error) {
             console.error("Erreur lors de la mise à jour : ", error);

@@ -7,11 +7,12 @@ import {API_URL} from '../API/api'
 
 const Table3 = () => {
   const [data, setData] = React.useState([]);
+  const authHeader = getAuthHeader()
 
   useEffect(() => {
     const getCollecte = async () => {
       try {
-        const response = await axios.get(`${API_URL}/Collecte/`);
+        const response = await axios.get(`${API_URL}/Collecte/`, authHeader);
         const responseData = response.data;
         setData(responseData)
         const dataWithIds = responseData.results.map((row, index) => ({

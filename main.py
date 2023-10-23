@@ -1,18 +1,40 @@
 " Main file of the API."
 import csv
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
+import os
+import socket
 
 import bcrypt
 from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from jose import jwt, JWTError
 
 from Backend.sql_app import CRUD, client_repository, models, schemas
 from Backend.sql_app.database import SessionLocal, engine, ENV
 
 models.Base.metadata.create_all(bind=engine)
 
+local_ip = socket.gethostbyname(socket.gethostname())
+
+if local_ip == '192.168.1.64':
+    ENV = "local"
+else:
+    # Environnement en ligne
+    ENV = os.environ.get("ENV", "online")
+
+if ENV == "local":
+    SECRET_KEY = "B4AB1DBD6953186D3ABF5C8D5625CF06" 
+    ALGORITHM = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 10
+else:
+    SECRET_KEY = str(os.getenv("SECRET_KEY"))
+    ALGORITHM = str(os.getenv("ALGORITHM"))
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES") or 30)
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
 
@@ -39,12 +61,82 @@ def get_db():
     finally:
         db.close()
 
+# ------------------------------------------------------ #
+#region Connexion par token
+def create_access_token(data: dict, expires_delta: timedelta or None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=60)
+    
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(status_code=401, detail="Invalid authentication credentials"
+                                          , headers={"WWW-Authenticate": "Bearer"})
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub", None)
+        if email is None:
+            raise credentials_exception
+        user = CRUD.get_user_by_email(db, email=email)
+        if user is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        return user
+    except JWTError:
+        raise credentials_exception
+
+
+async def get_current_active_user(current_user: schemas.UserBase = Depends(get_current_user)):
+    if current_user.Autorisation is False:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
+
+@app.post("/token/", response_model=schemas.Token)
+async def login_for_access_token_docs(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = CRUD.get_user_by_email(db, form_data.username)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Email incorrect")
+    else:
+        if bcrypt.checkpw(form_data.password.encode('utf-8'), bytes(user.Password)):
+            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            access_token = create_access_token(data={"sub": user.Email}, expires_delta=access_token_expires)
+            return {"access_token": access_token, "token_type": "bearer"}
+        else:
+            raise HTTPException(status_code=404, detail="Mot de passe incorrect")
+        
+@app.post("/Connexion2/", response_model=schemas.Token)
+async def login_for_access_token(current_user: schemas.UserForm, db: Session = Depends(get_db)):
+    user = CRUD.get_user_by_email(db, current_user.Email)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Email incorrect")
+    else:
+        if bcrypt.checkpw(current_user.Password.encode('utf-8'), bytes(user.Password)):
+            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            access_token = create_access_token(data={"sub": user.Email}, expires_delta=access_token_expires)
+            return {"access_token": access_token, "token_type": "bearer"}
+        else:
+            raise HTTPException(status_code=404, detail="Mot de passe incorrect")
+        
+
+@app.post("/users/me/items/", response_model=schemas.UserBase)
+async def read_own_items(current_user: schemas.UserBase = Depends(get_current_active_user)):
+    print(current_user.Email, current_user.Admin, current_user.Autorisation)
+    return schemas.UserBase(
+        Email=current_user.Email,
+        Admin=current_user.Admin,
+        Autorisation=current_user.Autorisation,
+    )
+
+#endregion : Connexion par token
 
 #region : Connexion visualisation et création d'un utilisateur
-
-# Connexion d'un utilisateur
-@app.post("/Connexion/", response_model=schemas.UserBase)
-def Connexion2(user: schemas.UserForm, db: Session = Depends(get_db)):
+# Connexion d'un utilisateur sans token (back-up)
+""" @app.post("/Connexion/", response_model=schemas.UserBase)
+def Connexion(user: schemas.UserForm, db: Session = Depends(get_db)):
     db_user = CRUD.get_user_by_email(db, user.Email)
     if user is None:
         raise HTTPException(status_code=404, detail="Email incorrect")
@@ -56,7 +148,7 @@ def Connexion2(user: schemas.UserForm, db: Session = Depends(get_db)):
                 Autorisation=db_user.Autorisation,
             )
         else:
-            raise HTTPException(status_code=404, detail="Mot de passe incorrect")
+            raise HTTPException(status_code=404, detail="Mot de passe incorrect") """
         
 # Creation d'un utilisateur
 @app.post("/create_user/", response_model=schemas.UserCreate)
@@ -96,15 +188,17 @@ def read_user_email(email: str, db: Session = Depends(get_db)):
 
 # Mise à jour du statu Admin d'un utilisateur
 @app.put("/editUserAdmin/", response_model=schemas.UserBase)
-def update_user_Admin(email: str, admin: bool, db: Session = Depends(get_db)):
-    user = CRUD.edit_admin_status(db, email, admin)
-    return user
+def update_user_Admin(user_edit: schemas.UserEditAdmin, db: Session = Depends(get_db),current_user: schemas.UserBase = Depends(get_current_active_user)):
+    if current_user.Admin is True:
+        user = CRUD.edit_admin_status(db, user_edit.Email, user_edit.Admin)
+        return user
 
 # Mise à jour du statu Autorisation d'un utilisateur
 @app.put("/editUserAutorisation/", response_model=schemas.UserBase)
-def update_user_Autorisation(email: str, autorisation: bool, db: Session = Depends(get_db)):
-    user = CRUD.edit_autorisation_status(db, email, autorisation)
-    return user
+def update_user_Autorisation(edit_user:schemas.UserEditAutorisation , db: Session = Depends(get_db),current_user: schemas.UserBase = Depends(get_current_active_user)):
+    if current_user.Admin is True:
+        user = CRUD.edit_autorisation_status(db, edit_user.Email, edit_user.Autorisation)
+        return user
 #endregion
 
 # ------------------------------------------------------ #
@@ -218,74 +312,86 @@ def upload_r_panier_articles(file: UploadFile = File(...), db: Session = Depends
 #region : Récupération des données pour la visualisation 
 # Dépenses par CSP et catégorie article
 @app.get("/depenses_CSP_ClasseArticle/")
-def depenses_CSP_ClasseArticle():
-    try:
-        results = client_repository.get_depenses_CSP_ClasseArticle()
-        formatted_results = []
-        for row in results:
-            formatted_results.append({
-                "CSP": row[0],
-                "depenses": row[1],
-                "categorie_vetement": row[2]
-            })
-        return {"results": formatted_results}
-    except Exception as e:
-        return {"error": str(e)}
+def depenses_CSP_ClasseArticle(current_user: schemas.UserBase = Depends(get_current_active_user)):
+    if current_user.Autorisation is True:
+        try:
+            results = client_repository.get_depenses_CSP_ClasseArticle()
+            formatted_results = []
+            for row in results:
+                formatted_results.append({
+                    "CSP": row[0],
+                    "depenses": row[1],
+                    "categorie_vetement": row[2]
+                })
+            return {"results": formatted_results}
+        except Exception as e:
+            return {"error": str(e)}
+    else: 
+        raise HTTPException(status_code=400, detail="Inactive user")
+
 
 # Dépenses moyenne par pannier par CSP
 @app.get("/moyenne_pannier_par_CSP/")
-def moyenne_pannier_par_CSP():
-    try:
-        results = client_repository.get_moyenne_du_panier_par_CSP()      
-        formatted_results = []
-        for row in results:
-            formatted_results.append({
-                "CSP": row[0],
-                "Moy_panier": row[1]
-            })
-        return {"results": formatted_results}
-    except Exception as e:
-        return {"error": str(e)}
+def moyenne_pannier_par_CSP(current_user: schemas.UserBase = Depends(get_current_active_user)):
+    if current_user.Autorisation is True:
+        try:
+            results = client_repository.get_moyenne_du_panier_par_CSP()      
+            formatted_results = []
+            for row in results:
+                formatted_results.append({
+                    "CSP": row[0],
+                    "Moy_panier": row[1]
+                })
+            return {"results": formatted_results}
+        except Exception as e:
+            return {"error": str(e)}
+    else: 
+        raise HTTPException(status_code=400, detail="Inactive user")
 
 # Collecte
 @app.get("/Collecte/")
-def Collecte():
-    try:
-        results = client_repository.get_Collecte()
-        formatted_results = []
-        for row in results:
-            formatted_results.append({
-                "collecte": row[0],
-                "num_panier": row[1],
-                "Prix_panier": row[2],
-                "montant": row[3],
-                "categorie_article": row[4]
-                })
-        return {"results": formatted_results}
-    except Exception as e:
-        return {"error": str(e)}
-
+def Collecte(current_user: schemas.UserBase = Depends(get_current_active_user)):
+    if current_user.Autorisation is True:
+        try:
+            results = client_repository.get_Collecte()
+            formatted_results = []
+            for row in results:
+                formatted_results.append({
+                    "collecte": row[0],
+                    "num_panier": row[1],
+                    "Prix_panier": row[2],
+                    "montant": row[3],
+                    "categorie_article": row[4]
+                    })
+            return {"results": formatted_results}
+        except Exception as e:
+            return {"error": str(e)}
+    else:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    
 # Vison globale    
 @app.get("/visu_ensemble/")
-def visu_ensemble():
-    try:
-        results = client_repository.get_visu_ensemble()
-        formatted_results = []
-        for row in results:
-            formatted_results.append({
-                "Client": row[0],
-                "Nbr enfants": row[1],
-                "CSP": row[2],
-                "id_panier": row[3],
-                "date achat": row[4],
-                "id_article": row[5],
-                "quantite_article": row[6],
-                "prix_vente": row[7],
-                "cout": row[8],
-                "categorie": row[9]
-                })
-        return {"results": formatted_results}
-    except Exception as e:
-        return {"error": str(e)}
-    
+def visu_ensemble(current_user: schemas.UserBase = Depends(get_current_active_user)):
+    if current_user.Autorisation is True:
+        try:
+            results = client_repository.get_visu_ensemble()
+            formatted_results = []
+            for row in results:
+                formatted_results.append({
+                    "Client": row[0],
+                    "Nbr enfants": row[1],
+                    "CSP": row[2],
+                    "id_panier": row[3],
+                    "date achat": row[4],
+                    "id_article": row[5],
+                    "quantite_article": row[6],
+                    "prix_vente": row[7],
+                    "cout": row[8],
+                    "categorie": row[9]
+                    })
+            return {"results": formatted_results}
+        except Exception as e:
+            return {"error": str(e)}
+    else:
+        raise HTTPException(status_code=400, detail="Inactive user")    
 #endregion:

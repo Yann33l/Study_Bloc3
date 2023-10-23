@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { setAuthHeader } from './token';
 
 export let API_URL;
 
@@ -46,15 +47,27 @@ export const createUser = async (Email, Password) => {
 }
 
 
+
 export const checkCredentials = async (Email, Password) => {
   try { 
     const requestData =  {
         Email: Email,
         Password: Password,
       };
+/*     const response = await axios.post(`${API_URL}/Connexion/`, requestData);
+ */
+    const loginResponse  = await axios.post(`${API_URL}/Connexion2/`, requestData);
+    const authToken = loginResponse.data.access_token;
+    const authHeader = {headers: {
+      Authorization : `Bearer ${authToken}`}
+    };
+    setAuthHeader(authHeader);
 
-    const response = await axios.post(`${API_URL}/Connexion/`, requestData);
+
+    
+    const response = await axios.post(`${API_URL}/users/me/items/`, null, authHeader);
     const data = response.data;
+
     //Rendre plus propre && ajout par token de la vérification
     if (data.Autorisation === true) {
       if (data.Admin === true) {

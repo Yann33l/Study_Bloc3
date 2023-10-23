@@ -3,11 +3,14 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { columnsTable1, dataTableStyle } from "./TableStyle";
 import axios from 'axios'
 import {API_URL} from '../API/api'
+import { getAuthHeader } from "../API/token";
 
 
 
 const Table1 = () => {
   const [data, setData] = React.useState([]);
+  const authHeader = getAuthHeader()
+
 
     // Methode 1: fetch
  /* useEffect(() => {
@@ -23,11 +26,9 @@ const Table1 = () => {
     }, []);*/
    
     //Methode 2: axios
-  useEffect(() => {
-    
     const getDepenses_CSP_ClasseArticle = async () => {
       try {
-        const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`);
+        const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`, authHeader);
         const responseData = response.data;
         setData(responseData)
         const dataWithIds = responseData.results.map((row, index) => ({
@@ -39,7 +40,7 @@ const Table1 = () => {
         console.error(error);
       }
     };
-  
+  useEffect(() => {
     getDepenses_CSP_ClasseArticle(); 
   }, []);
 
