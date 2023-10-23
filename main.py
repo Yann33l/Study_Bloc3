@@ -187,7 +187,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = CRUD.get_user_by_ID(db, id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+    return db_user"""
 
 # Récupération d'un utilisateur par son email
 @app.get("/userByEmail/", response_model=schemas.UserBase)
@@ -195,7 +195,7 @@ def read_user_email(email: str, db: Session = Depends(get_db)):
     db_user = CRUD.get_user_by_email(db, email)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_user"""
+    return db_user
 
 # Mise à jour du statu Admin d'un utilisateur
 @app.put("/editUserAdmin/", response_model=schemas.UserBase)
