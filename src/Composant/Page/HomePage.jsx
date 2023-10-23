@@ -51,14 +51,14 @@ function HomePage({ isAdmin }) {
               Remplacement du système de login actuel par un système de token :
               Cette mise à jour améliorera la sécurité de l'application en
               remplaçant le processus de connexion traditionnel par un système
-              basé sur des jetons d'authentification.
+              basé sur des jetons d'authentification. /Fait
             </li>
             <li>
               Ajout d'une sélection multiple des lignes pour exporter les
               tableaux : Cette fonctionnalité permettra aux utilisateurs de
               sélectionner plusieurs lignes de données à la fois, simplifiant
               ainsi le processus d'exportation de tableaux pour des analyses
-              ultérieures.
+              ultérieures. /Fait
             </li>
           </ul>
           <h2>Mon projet professionel</h2>

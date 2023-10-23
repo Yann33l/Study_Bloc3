@@ -135,7 +135,6 @@ async def login_for_access_token(current_user: schemas.UserForm, db: Session = D
 
 @app.post("/user/info/", response_model=schemas.UserBase)
 async def read_user_info(current_user: schemas.UserBase = Depends(get_current_active_user)):
-    print(current_user.Email, current_user.Admin, current_user.Autorisation)
     return schemas.UserBase(
         Email=current_user.Email,
         Admin=current_user.Admin,
@@ -176,11 +175,12 @@ def create_users(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 # Récupération de la liste des utilisateurs
 @app.get("/users/", response_model=list[schemas.UserBase])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = CRUD.get_users(db, skip=skip, limit=limit)
-    return users
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: schemas.UserBase = Depends(get_current_active_user)):
+    if current_user.Admin is True:
+        users = CRUD.get_users(db, skip=skip, limit=limit)
+        return users
 
-
+"""
 # Récupération d'un utilisateur par son ID
 @app.get("/users/{user_id}", response_model=schemas.UserBase)
 def read_user(user_id: int, db: Session = Depends(get_db)):
@@ -190,18 +190,14 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 # Récupération d'un utilisateur par son email
-
-
 @app.get("/userByEmail/", response_model=schemas.UserBase)
 def read_user_email(email: str, db: Session = Depends(get_db)):
     db_user = CRUD.get_user_by_email(db, email)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+    return db_user"""
 
 # Mise à jour du statu Admin d'un utilisateur
-
-
 @app.put("/editUserAdmin/", response_model=schemas.UserBase)
 def update_user_Admin(user_edit: schemas.UserEditAdmin, db: Session = Depends(get_db), current_user: schemas.UserBase = Depends(get_current_active_user)):
     if current_user.Admin is True:
@@ -209,8 +205,6 @@ def update_user_Admin(user_edit: schemas.UserEditAdmin, db: Session = Depends(ge
         return user
 
 # Mise à jour du statu Autorisation d'un utilisateur
-
-
 @app.put("/editUserAutorisation/", response_model=schemas.UserBase)
 def update_user_Autorisation(edit_user: schemas.UserEditAutorisation, db: Session = Depends(get_db), current_user: schemas.UserBase = Depends(get_current_active_user)):
     if current_user.Admin is True:
@@ -220,7 +214,7 @@ def update_user_Autorisation(edit_user: schemas.UserEditAutorisation, db: Sessio
 # endregion
 
 # ------------------------------------------------------ #
-
+"""
 # region : Remplissage de la base de données Clients (json avec tableau )
 
 
@@ -344,13 +338,11 @@ def upload_r_panier_articles(file: UploadFile = File(...), db: Session = Depends
         raise HTTPException(
             status_code=500, detail="Erreur interne du serveur : {}".format(e))
  # endregion
-
+"""
 # ------------------------------------------------------ #
 
 # region : Récupération des données pour la visualisation
 # Dépenses par CSP et catégorie article
-
-
 @app.get("/depenses_CSP_ClasseArticle/")
 def depenses_CSP_ClasseArticle(current_user: schemas.UserBase = Depends(get_current_active_user)):
     if current_user.Autorisation is True:
@@ -389,8 +381,6 @@ def moyenne_pannier_par_CSP(current_user: schemas.UserBase = Depends(get_current
         raise HTTPException(status_code=400, detail="Inactive user")
 
 # Collecte
-
-
 @app.get("/Collecte/")
 def Collecte(current_user: schemas.UserBase = Depends(get_current_active_user)):
     if current_user.Autorisation is True:
@@ -412,8 +402,6 @@ def Collecte(current_user: schemas.UserBase = Depends(get_current_active_user)):
         raise HTTPException(status_code=400, detail="Inactive user")
 
 # Vison globale
-
-
 @app.get("/visu_ensemble/")
 def visu_ensemble(current_user: schemas.UserBase = Depends(get_current_active_user)):
     if current_user.Autorisation is True:
