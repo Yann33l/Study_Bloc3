@@ -30,4 +30,3 @@ tzdata==2023.3
 uvicorn==0.22.0
 mysqlclient==2.2.0
 python-jose==3.3.0
-```
