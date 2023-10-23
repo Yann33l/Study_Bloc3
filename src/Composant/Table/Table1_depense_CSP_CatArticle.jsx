@@ -1,47 +1,33 @@
-import React, { useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { columnsTable1, dataTableStyle } from "./TableStyle";
-import axios from 'axios'
-import {API_URL} from '../API/api'
+import axios from "axios";
+import React, { useEffect } from "react";
+import { API_URL } from "../API/api";
 import { getAuthHeader } from "../API/token";
-
-
+import { columnsTable1, dataTableStyle } from "./TableStyle";
 
 const Table1 = () => {
   const [data, setData] = React.useState([]);
-  const authHeader = getAuthHeader()
+  const authHeader = getAuthHeader();
 
-
-    // Methode 1: fetch
- /* useEffect(() => {
-      fetch(`${API_URL}/depenses_CSP_ClasseArticle`)
-        .then((response) => response.json())
-        .then((json) => {
-        const dataWithIds = json.results.map((row, index) => ({
-          ...row,
-          id: index + 1,
-        }));
-        setData(dataWithIds);
-      });
-    }, []);*/
-   
-    //Methode 2: axios
-    const getDepenses_CSP_ClasseArticle = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/depenses_CSP_ClasseArticle/`, authHeader);
-        const responseData = response.data;
-        setData(responseData)
-        const dataWithIds = responseData.results.map((row, index) => ({
-            ...row,
-            id: index + 1, 
-          }));
-          setData(dataWithIds); 
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const getDepenses_CSP_ClasseArticle = async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/depenses_CSP_ClasseArticle/`,
+        authHeader
+      );
+      const responseData = response.data;
+      setData(responseData);
+      const dataWithIds = responseData.results.map((row, index) => ({
+        ...row,
+        id: index + 1,
+      }));
+      setData(dataWithIds);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    getDepenses_CSP_ClasseArticle(); 
+    getDepenses_CSP_ClasseArticle();
   }, []);
 
   return (
@@ -50,7 +36,7 @@ const Table1 = () => {
       columns={columnsTable1}
       loading={!data.length}
       sx={dataTableStyle}
-      getRowId={(row) => row.id} 
+      getRowId={(row) => row.id}
       slots={{ toolbar: GridToolbar }}
       checkboxSelection
     />
@@ -58,4 +44,3 @@ const Table1 = () => {
 };
 
 export default Table1;
-

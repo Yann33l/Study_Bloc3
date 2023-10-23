@@ -18,6 +18,7 @@ def get_depenses_CSP_ClasseArticle():
         result = connection.execute(query)
         return result.fetchall()
 
+
 def get_moyenne_du_panier_par_CSP():
     with engine.connect() as connection:
         query = text("SELECT libelle_CSP as CSP, round(sum(quantite_article*prix_vente)/count(distinct id_panier),2) as Moy_panier \
@@ -31,7 +32,8 @@ def get_moyenne_du_panier_par_CSP():
                     ;")
         result = connection.execute(query)
         return result.fetchall()
-    
+
+
 def get_Collecte():
     with engine.connect() as connection:
         query = text("SELECT ROW_NUMBER() OVER (ORDER BY id_panier, libelle_categorie) AS collecte, \
@@ -56,10 +58,10 @@ def get_Collecte():
                         ON r_pa.id_panier = prix_panier.panier_id \
                     WHERE prix_vente IS NOT NULL \
                     GROUP BY libelle_CSP, libelle_categorie, ca.ID, id_panier, prix_panier.PPA \
-                    ORDER BY id_panier, libelle_categorie;") 
+                    ORDER BY id_panier, libelle_categorie;")
         result = connection.execute(query)
         return result.fetchall()
-         
+
 
 def get_visu_ensemble():
     with engine.connect() as connection:
@@ -70,7 +72,6 @@ def get_visu_ensemble():
                     LEFT JOIN r_panier_article r_pa on r_pa.id_panier = p.ID \
                     LEFT JOIN articles a on a.ID = r_pa.id_article \
                     LEFT JOIN categories_articles ca on a.id_categorie_article = ca.ID \
-                    ;") 
+                    ;")
         result = connection.execute(query)
         return result.fetchall()
-

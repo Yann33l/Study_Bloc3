@@ -7,28 +7,36 @@ from . import models, schemas
 def get_user_by_ID(db: Session, id: int):
     return db.query(models.users).filter(models.users.ID == id).first()
 
+
 def get_user_by_email(db: Session, email: str):
     return db.query(models.users).filter(models.users.Email == email).scalar()
+
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.users).offset(skip).limit(limit).all()
 
+
 def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.users(Email=user.Email,First_connexion=None,Last_change_password=user.Last_change_password , Password=user.Password, Admin=user.Admin, Autorisation=user.Autorisation)
+    db_user = models.users(Email=user.Email, First_connexion=None, Last_change_password=user.Last_change_password,
+                           Password=user.Password, Admin=user.Admin, Autorisation=user.Autorisation)
     db.add(db_user)
     db.commit()
     return db_user
 
+
 def edit_admin_status(db: Session, email: str, admin: bool):
-    db_user = db.query(models.users).filter(models.users.Email == email).scalar()
+    db_user = db.query(models.users).filter(
+        models.users.Email == email).scalar()
     if db_user:
         db_user.Admin = admin
         db.commit()
         db.refresh(db_user)
     return db_user
 
+
 def edit_autorisation_status(db: Session, email: str, autorisation: bool):
-    db_user = db.query(models.users).filter(models.users.Email == email).scalar()
+    db_user = db.query(models.users).filter(
+        models.users.Email == email).scalar()
     if db_user:
         db_user.Autorisation = autorisation
         db.commit()
@@ -36,14 +44,17 @@ def edit_autorisation_status(db: Session, email: str, autorisation: bool):
     return db_user
 
 # Clients
-def get_client_by_ID(db: Session, id:int):
+def get_client_by_ID(db: Session, id: int):
     return db.query(models.clients).filter(models.clients.ID == id).first()
+
 
 def get_clients(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.clients).offset(skip).limit(limit).all()
 
+
 def create_client(db: Session, client: schemas.Clients):
-    db_client = models.clients(num_client=client.num_client, nbr_enfants=client.nbr_enfants, id_CSP=client.id_CSP)
+    db_client = models.clients(
+        num_client=client.num_client, nbr_enfants=client.nbr_enfants, id_CSP=client.id_CSP)
     db.add(db_client)
     db.commit()
     db.refresh(db_client)
@@ -56,7 +67,8 @@ def create_client(db: Session, client: schemas.Clients):
 
 # Produits
 def create_produit(db: Session, articles: schemas.articles):
-    db_articles = models.articles(ID=articles.ID, libelle_article=articles.libelle_article, prix_vente=articles.prix_vente, cout=articles.cout, id_categorie_article=articles.id_categorie_article)
+    db_articles = models.articles(ID=articles.ID, libelle_article=articles.libelle_article,
+                                  prix_vente=articles.prix_vente, cout=articles.cout, id_categorie_article=articles.id_categorie_article)
     db.add(db_articles)
     db.commit()
     db.refresh(db_articles)
@@ -71,7 +83,8 @@ def create_produit(db: Session, articles: schemas.articles):
 
 # Paniers
 def create_panier(db: Session, paniers: schemas.paniers):
-    db_paniers = models.paniers(ID=paniers.ID, id_client=paniers.id_client, date_achat=paniers.date_achat)
+    db_paniers = models.paniers(
+        ID=paniers.ID, id_client=paniers.id_client, date_achat=paniers.date_achat)
     db.add(db_paniers)
     db.commit()
     db.refresh(db_paniers)
@@ -84,7 +97,8 @@ def create_panier(db: Session, paniers: schemas.paniers):
 
 # r_panier_article
 def create_r_panier_article(db: Session, r_panier_article: schemas.r_panier_article):
-    db_r_panier_article = models.r_panier_article(ID=r_panier_article.ID, id_panier=r_panier_article.id_panier, id_article=r_panier_article.id_article, quantite_article=r_panier_article.quantite_article)
+    db_r_panier_article = models.r_panier_article(ID=r_panier_article.ID, id_panier=r_panier_article.id_panier,
+                                                  id_article=r_panier_article.id_article, quantite_article=r_panier_article.quantite_article)
     db.add(db_r_panier_article)
     db.commit()
     db.refresh(db_r_panier_article)
