@@ -3,6 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { columnsTable3, dataTableStyle } from "./TableStyle";
 import axios from 'axios'
 import {API_URL} from '../API/api'
+import { getAuthHeader } from "../API/token";
 
 
 const Table3 = () => {

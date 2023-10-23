@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useEffect } from "react";
 import { API_URL } from '../API/api';
 import { columnsTable2, dataTableStyle } from "./TableStyle";
-
+import { getAuthHeader } from "../API/token";
 
 const Table2 = () => {
     const [data, setData] = React.useState([]);
