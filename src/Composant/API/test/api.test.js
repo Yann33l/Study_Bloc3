@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { checkCredentials } from './api';
+import { checkCredentials } from '../api';
+import jest from 'jest-mock';
 
 jest.mock('axios');
 

@@ -174,8 +174,7 @@ function App() {
   if (loggedIn === "admin" && isAutorized === true) {
     return <HomePage isAdmin={true} />;
   } else if (
-    (loggedIn === "admin" && isAutorized === false) 
-    || 
+    (loggedIn === "admin" && isAutorized === false) ||
     (loggedIn === true && isAutorized === false)
   ) {
     alert("Votre compte n'est pas encore activé par un administrateur");

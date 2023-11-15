@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 // trop d'import ajouter un index table et graph
 import Table1 from "../Table/Table1_depense_CSP_CatArticle";
@@ -17,6 +19,25 @@ function HomePage({ isAdmin }) {
   const handleButtonClick = (newContent) => {
     setContent(newContent);
   };
+
+  const handleGeneratePDF = () => {
+    const content = document.getElementById("pdf-content");
+    html2canvas(content, {
+      backgroundColor: "rgb(54, 54, 54)",
+      windowWidth: document.getElementById("pdf-content").offsetWidth,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF(
+        canvas.width > canvas.height ? "l" : "p",
+      );
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("graphiques.pdf");
+    });
+  };
+
   // Contenu du main basé sur l'état
   let mainContent;
   switch (content) {
@@ -101,17 +122,27 @@ function HomePage({ isAdmin }) {
       break;
     case "Graph1":
       mainContent = (
-        <div>
-          <Graph1 />
-          <Graph1_2 />
-        </div>
+        <>
+          <div id="pdf-content">
+            <Graph1 />
+            <Graph1_2 />
+          </div>
+          <button onClick={() => handleGeneratePDF("Generate PDF")}>
+            generate PDF
+          </button>
+        </>
       );
       break;
     case "Graph2":
       mainContent = (
-        <div>
-          <Graph2 />
-        </div>
+        <>
+          <div id="pdf-content">
+            <Graph2 />
+          </div>
+          <button onClick={() => handleGeneratePDF("Generate PDF")}>
+            generate PDF
+          </button>
+        </>
       );
       break;
 
