@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-// trop d'import ajouter un index table et graph
 import Table1 from "../Table/Table1_depense_CSP_CatArticle";
 import Table2 from "../Table/Table2_moyenne_pannier_par_CSP";
 import Table3 from "../Table/Table3_Collecte";
@@ -22,18 +21,17 @@ function HomePage({ isAdmin }) {
 
   const handleGeneratePDF = () => {
     const content = document.getElementById("pdf-content");
+
     html2canvas(content, {
       backgroundColor: "rgb(54, 54, 54)",
       windowWidth: document.getElementById("pdf-content").offsetWidth,
+      windowHeight: document.getElementById("pdf-content").offsetHeight,
     }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF(
-        canvas.width > canvas.height ? "l" : "p",
-      );
+      const pdf = new jsPDF(canvas.width > canvas.height ? "l" : "p");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.addImage(canvas, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save("graphiques.pdf");
     });
   };
@@ -123,25 +121,25 @@ function HomePage({ isAdmin }) {
     case "Graph1":
       mainContent = (
         <>
-          <div id="pdf-content">
+          <div id="pdf-content" style={{ width: "800px" }}>
             <Graph1 />
             <Graph1_2 />
           </div>
-          <button onClick={() => handleGeneratePDF("Generate PDF")}>
+          {isAdmin && (<button onClick={() => handleGeneratePDF("Generate PDF")}>
             generate PDF
-          </button>
+          </button>)}
         </>
       );
       break;
     case "Graph2":
       mainContent = (
         <>
-          <div id="pdf-content">
+          <div id="pdf-content" style={{ width: 1200 }}>
             <Graph2 />
           </div>
-          <button onClick={() => handleGeneratePDF("Generate PDF")}>
+          {isAdmin && (<button onClick={() => handleGeneratePDF("Generate PDF")}>
             generate PDF
-          </button>
+          </button>)}
         </>
       );
       break;
